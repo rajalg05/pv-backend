@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.audit.model.ManPower;
+import com.audit.model.KYC;
 
 @Repository
-public interface PvRepository extends CrudRepository<ManPower, String> {
+public interface KycRepository extends CrudRepository<KYC, String> {
 
-    List<ManPower> findAll();
+    List<KYC> findAll();
  
-    ManPower save(ManPower manPower);
+    KYC save(KYC kyc);
 }

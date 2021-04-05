@@ -5,12 +5,12 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.audit.model.ManPower;
+import com.audit.model.Job;
 
 @Repository
-public interface PvRepository extends CrudRepository<ManPower, String> {
+public interface JobRepository extends CrudRepository<Job, String> {
 
-    List<ManPower> findAll();
+    List<Job> findAll();
  
-    ManPower save(ManPower manPower);
+    Job save(Job job);
 }
