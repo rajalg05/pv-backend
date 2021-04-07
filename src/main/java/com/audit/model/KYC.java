@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = "kyc")
 public class KYC {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	private String firstKycId;

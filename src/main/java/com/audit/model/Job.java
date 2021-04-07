@@ -11,13 +11,11 @@ import javax.persistence.Table;
 @Table(name = "job")
 public class Job {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@ManyToOne(targetEntity = Associate.class)
 	private Associate associate;
-	
-	private int associateId;
 
 	private int clientName;
 
@@ -39,14 +37,6 @@ public class Job {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getAssociateid() {
-		return associateId;
-	}
-
-	public void setAssociateid(int associateId) {
-		this.associateId = associateId;
 	}
 
 	public int getClientname() {

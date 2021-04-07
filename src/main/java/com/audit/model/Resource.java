@@ -1,5 +1,6 @@
 package com.audit.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,24 +13,18 @@ import javax.persistence.Table;
 public class Resource {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@OneToOne(mappedBy = "contactDetailId")
+	@OneToOne( cascade = CascadeType.ALL) 
 	private BasicContactDetail basicContactDetail;  
 	
-	@OneToOne(mappedBy = "kycId")
+	@OneToOne( cascade = CascadeType.ALL) 
 	private KYC kyc;
 	
-	@OneToOne(mappedBy = "addressId")
+	@OneToOne( cascade = CascadeType.ALL)
 	private Address address;
-	
-	private int contactDetailId;
-	
-	private int kycId;
-	
-	private int addressId;
-	
+	 
 	private java.util.Date dateOfBirth;
 	
 	private String qualification;
@@ -51,29 +46,29 @@ public class Resource {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public int getContactdetailid() {
-		return contactDetailId;
+ 
+	public BasicContactDetail getBasicContactDetail() {
+		return basicContactDetail;
 	}
 
-	public void setContactdetailid(int contactDetailId) {
-		this.contactDetailId = contactDetailId;
+	public void setBasicContactDetail(BasicContactDetail basicContactDetail) {
+		this.basicContactDetail = basicContactDetail;
 	}
 
-	public int getKycid() {
-		return kycId;
+	public KYC getKyc() {
+		return kyc;
 	}
 
-	public void setKycid(int kycId) {
-		this.kycId = kycId;
+	public void setKyc(KYC kyc) {
+		this.kyc = kyc;
 	}
 
-	public int getAddressid() {
-		return addressId;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setAddressid(int addressId) {
-		this.addressId = addressId;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public java.util.Date getDateofbirth() {

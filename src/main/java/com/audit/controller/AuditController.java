@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.audit.dao.PvRepository;
+import com.audit.dao.ResourceRepository;
 import com.audit.model.ManPower;
 import com.audit.model.Resource;
 
 @RestController
 @RequestMapping("/audit")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuditController {
 
 	@Autowired
@@ -35,10 +36,13 @@ public class AuditController {
 
 	@Autowired
 	PvRepository pvRepository;
+	
+	@Autowired
+	ResourceRepository resourceRepository;
 
-	@PostMapping("/saveResourceData")
+	@PostMapping("/saveResource")
 	ResponseEntity<String> saveResource(@RequestBody Resource resource) {
-		
+		resourceRepository.save(resource);
 		return new ResponseEntity<String>("Save Resource Successfull!!", HttpStatus.OK);
 	}
 	@GetMapping("/getManPower")
