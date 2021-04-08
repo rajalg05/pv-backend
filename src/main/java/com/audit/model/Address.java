@@ -11,23 +11,23 @@ import javax.persistence.Table;
 public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int id;
 	
-	private String addressLine1;
+	public String addressLine1;
 	
-	private String streetAddress1;
+	public String streetAddress1;
 	
-	private String streetAddress2;
+	public String streetAddress2;
 	
-	private String city;
+	public String city;
 	
-	private String state;
+	public String state;
 	
-	private String postalCode;
+	public String postalCode;
 	
-	private String country;
+	public String country;
 	
-	private java.util.Date createdTs;
+	public java.util.Date createdTs;
 
 	public int getId() {
 		return id;

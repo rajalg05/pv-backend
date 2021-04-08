@@ -11,25 +11,25 @@ import javax.persistence.Table;
 public class KYC {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int id;
 	
-	private String firstKycId;
+	public String firstKycId;
 	
-	private String firstKycType;
+	public String firstKycType;
 	
-	private String secondKycId;
+	public String secondKycId;
 	
-	private String secondKycType;
+	public String secondKycType;
 	
-	private String firstKycFrontImagePath;
+	public String firstKycFrontImagePath;
 	
-	private String firstKycBackImagePath;
+	public String firstKycBackImagePath;
 	
-	private String secondKycFrontImagePath;
+	public String secondKycFrontImagePath;
 	
-	private String secondKycBackImagePath;
+	public String secondKycBackImagePath;
 	
-	private java.util.Date createdTs;
+	public java.util.Date createdTs;
 
 	public int getId() {
 		return id;

@@ -36,13 +36,19 @@ CREATE TABLE BasicContactDetail (
     updatedTs TIMESTAMP
 );
 
+ALTER TABLE Resource MODIFY COLUMN bike VARCHAR(50);
+ALTER TABLE Resource MODIFY COLUMN qualification VARCHAR(50);
+ALTER TABLE Resource MODIFY COLUMN excelSkills VARCHAR(50);
+ALTER TABLE Resource MODIFY COLUMN stockAuditExp VARCHAR(50);
+ALTER TABLE Resource MODIFY COLUMN resourceType VARCHAR(50);
+
 CREATE TABLE Resource (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	contactDetailId INT,
     kycId INT,
     addressId INT,
     dateOfBirth DATE,
-    ownsBike BOOLEAN,
+    bike VARCHAR(10),
     qualification VARCHAR(50),
     excelSkills VARCHAR(10),
     stockAuditExp VARCHAR(10),

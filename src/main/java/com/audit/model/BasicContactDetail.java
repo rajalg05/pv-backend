@@ -11,19 +11,19 @@ import javax.persistence.Table;
 public class BasicContactDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int id;
 	
-	private String firstName;
+	public String firstName;
 	
-	private String lastName;
+	public String lastName;
 	
-	private String whatsappCountryCode;
+	public String whatsappCountryCode;
 		
-	private int whatsappMobileNumber;
+	public int whatsappMobileNumber;
 	
-	private String email;
+	public String email;
 	
-	private java.util.Date createdTs;
+	public java.util.Date createdTs;
 
 	public int getId() {
 		return id;

@@ -12,24 +12,24 @@ import javax.persistence.Table;
 public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int id;
 
 	@ManyToOne(targetEntity = Associate.class)
-	private Associate associate;
+	public Associate associate;
 
-	private int clientName;
+	public int clientName;
 
-	private String frequencyOfAudit;
+	public String frequencyOfAudit;
 
-	private String paymentType;
+	public String paymentType;
 
-	private double totalPayment;
+	public double totalPayment;
 
-	private int resourcesNeeded;
+	public int resourcesNeeded;
 
-	private java.util.Date createdTs;
+	public java.util.Date createdTs;
 
-	private java.util.Date updatedTs;
+	public java.util.Date updatedTs;
 
 	public int getId() {
 		return id;

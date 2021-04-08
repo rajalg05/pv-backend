@@ -14,30 +14,32 @@ public class Resource {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int id;
 	
 	@OneToOne( cascade = CascadeType.ALL) 
-	private BasicContactDetail basicContactDetail;  
+	public BasicContactDetail basicContactDetail;  
 	
 	@OneToOne( cascade = CascadeType.ALL) 
-	private KYC kyc;
+	public KYC kyc;
 	
 	@OneToOne( cascade = CascadeType.ALL)
-	private Address address;
+	public Address address;
 	 
-	private java.util.Date dateOfBirth;
+	public java.util.Date dateOfBirth;
 	
-	private String qualification;
+	public String qualification;
 	
-	private String excelSkills;
+	public String excelSkills;
 	
-	private String stockAuditExp;
+	public String stockAuditExp;
 	
-	private String resourceType;
+	public String resourceType;
 	
-	private java.util.Date createdTs;
+	public String bike;
 	
-	private java.util.Date updatedTs;
+	public java.util.Date createdTs;
+	
+	public java.util.Date updatedTs;
 
 	public int getId() {
 		return id;
@@ -109,6 +111,14 @@ public class Resource {
 
 	public void setResourcetype(String resourceType) {
 		this.resourceType = resourceType;
+	}
+
+	public String getBike() {
+		return bike;
+	}
+
+	public void setBike(String bike) {
+		this.bike = bike;
 	}
 
 	public java.util.Date getCreatedts() {

@@ -12,20 +12,20 @@ import javax.persistence.Table;
 public class Associate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int id;
 	
 	@OneToOne 
-	private BasicContactDetail basicContactDetail;  
+	public BasicContactDetail basicContactDetail;  
 	
 	@OneToOne 
-	private KYC kyc;
+	public KYC kyc;
 	
 	@OneToOne 
-	private Address address;
+	public Address address;
 		
-	private java.util.Date createdTs;
+	public java.util.Date createdTs;
 	
-	private java.util.Date updatedTs;
+	public java.util.Date updatedTs;
 
 	public int getId() {
 		return id;
