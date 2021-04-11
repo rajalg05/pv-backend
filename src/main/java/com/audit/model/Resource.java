@@ -35,7 +35,7 @@ public class Resource {
 	
 	public String resourceType;
 	
-	public String bike;
+	public String bike; 
 	
 	public java.util.Date createdTs;
 	
@@ -119,8 +119,8 @@ public class Resource {
 
 	public void setBike(String bike) {
 		this.bike = bike;
-	}
-
+	} 
+	
 	public java.util.Date getCreatedts() {
 		return createdTs;
 	}

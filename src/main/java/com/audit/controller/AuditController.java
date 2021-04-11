@@ -45,6 +45,17 @@ public class AuditController {
 		resourceRepository.save(resource);
 		return new ResponseEntity<String>("Save Resource Successfull!!", HttpStatus.OK);
 	}
+	
+	@GetMapping("/getResources")
+	ResponseEntity<List<Resource>> findAll() {
+		List<Resource> l = resourceRepository.findAll();
+		if(l.size() > 0) {
+			return ResponseEntity.ok(l);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
 	@GetMapping("/getManPower")
 	String getManPower(String tlPune) {
 		List<ManPower> manPowerList = pvRepository.findAll();
