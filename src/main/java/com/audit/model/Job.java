@@ -1,5 +1,6 @@
 package com.audit.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,12 +15,12 @@ public class Job {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 
-	@ManyToOne(targetEntity = Associate.class)
+	@ManyToOne( cascade = CascadeType.ALL) 
 	public Associate associate;
 
 	public String jobName;
 	
-	public int clientName;
+	public String clientName;
 
 	public String frequencyOfAudit;
 
@@ -47,13 +48,13 @@ public class Job {
 
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
-	}
-
-	public int getClientname() {
+	} 
+	
+	public String getClientName() {
 		return clientName;
 	}
 
-	public void setClientname(int clientName) {
+	public void setClientName(String clientName) {
 		this.clientName = clientName;
 	}
 
