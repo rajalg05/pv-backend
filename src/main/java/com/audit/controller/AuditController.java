@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.audit.dao.AssociateRepository;
+import com.audit.dao.JobRepository;
 import com.audit.dao.PvRepository;
 import com.audit.dao.ResourceRepository;
-import com.audit.model.ManPower;
+import com.audit.model.Associate;
+import com.audit.model.Job;
 import com.audit.model.Resource;
 
 @RestController
@@ -39,6 +42,13 @@ public class AuditController {
 	
 	@Autowired
 	ResourceRepository resourceRepository;
+
+	@Autowired
+	AssociateRepository associateRepository;
+	
+
+	@Autowired
+	JobRepository jobRepository;
 
 	@PostMapping("/saveResource")
 	ResponseEntity<String> saveResource(@RequestBody Resource resource) {
@@ -56,18 +66,39 @@ public class AuditController {
 		}
 	}
 	
-	@GetMapping("/getManPower")
-	String getManPower(String tlPune) {
-		List<ManPower> manPowerList = pvRepository.findAll();
-		System.out.println("tlPune = " + tlPune);
-		return "The state of " + tlPune + "is " + manPowerList.get(0).getState();
+	@PostMapping("/saveAssociate")
+	ResponseEntity<String> saveAssociate(@RequestBody Associate associate) {
+		associateRepository.save(associate);
+		return new ResponseEntity<String>("Save Associate Successfull!!", HttpStatus.OK);
 	}
+	
+	@GetMapping("/findAllAssociates")
+	ResponseEntity<List<Associate>> findAllAssociate() {
+		List<Associate> l = associateRepository.findAll();
+		if(l.size() > 0) {
+			return ResponseEntity.ok(l);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	} 
 
-	@PostMapping("/saveManPower")
-	ManPower saveManPower(ManPower manPower) {
-		return pvRepository.save(manPower);
+
+	@PostMapping("/saveJob")
+	ResponseEntity<String> saveJob(@RequestBody Job job) {
+		jobRepository.save(job);
+		return new ResponseEntity<String>("Save Job Successfull!!", HttpStatus.OK);
 	}
-
+	
+	@GetMapping("/findAllJobs")
+	ResponseEntity<List<Job>> findAllJobs() {
+		List<Job> l = jobRepository.findAll();
+		if(l.size() > 0) {
+			return ResponseEntity.ok(l);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	} 
+	
 	@GetMapping("/sendMail")
 	String sendMail() {
 		// Recipient's email ID needs to be mentioned.

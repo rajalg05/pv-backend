@@ -1,5 +1,6 @@
 package com.audit.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,13 +15,13 @@ public class Associate {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 	
-	@OneToOne 
+	@OneToOne( cascade = CascadeType.ALL) 
 	public BasicContactDetail basicContactDetail;  
 	
-	@OneToOne 
+	@OneToOne( cascade = CascadeType.ALL)  
 	public KYC kyc;
 	
-	@OneToOne 
+	@OneToOne( cascade = CascadeType.ALL)  
 	public Address address;
 		
 	public java.util.Date createdTs;

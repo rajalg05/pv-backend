@@ -17,6 +17,8 @@ public class Job {
 	@ManyToOne(targetEntity = Associate.class)
 	public Associate associate;
 
+	public String jobName;
+	
 	public int clientName;
 
 	public String frequencyOfAudit;
@@ -37,6 +39,14 @@ public class Job {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getJobName() {
+		return jobName;
+	}
+
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
 	}
 
 	public int getClientname() {
