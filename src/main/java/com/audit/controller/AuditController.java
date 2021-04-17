@@ -27,6 +27,7 @@ import com.audit.dao.JobRepository;
 import com.audit.dao.ResourceRepository;
 import com.audit.model.Associate;
 import com.audit.model.Audit;
+import com.audit.model.Job;
 import com.audit.model.Resource;
 
 @RestController
@@ -94,6 +95,28 @@ public class AuditController {
 		return new ResponseEntity<String>("Delete Resource Successfull!!", HttpStatus.OK);
 	}
 	
+	@PostMapping("/saveJob")
+	ResponseEntity<String> saveJob(@RequestBody Job job) {
+		jobRepository.save(job);
+		return new ResponseEntity<String>("Save Job Successfull!!", HttpStatus.OK);
+	}
+	
+	@GetMapping("/findAllJobs")
+	ResponseEntity<List<Job>> findAllJobs() {
+		List<Job> l = jobRepository.findAll();
+		if(l.size() > 0) {
+			return ResponseEntity.ok(l);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	@PostMapping("/deleteJob")
+	ResponseEntity<String> deleteJob(@RequestBody Job job) {
+		jobRepository.delete(job);
+		return new ResponseEntity<String>("Delete Job Successfull!!", HttpStatus.OK);
+	}
+	
 	@PostMapping("/saveAudit")
 	ResponseEntity<String> saveAudit(@RequestBody Audit Audit) {
 		auditRepository.save(Audit);
@@ -115,7 +138,6 @@ public class AuditController {
 		auditRepository.delete(audit);
 		return new ResponseEntity<String>("Delete Audit Successfull!!", HttpStatus.OK);
 	}
-	
 	
 	@GetMapping("/sendMail")
 	String sendMail() {
