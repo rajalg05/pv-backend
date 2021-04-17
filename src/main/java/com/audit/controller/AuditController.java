@@ -56,6 +56,12 @@ public class AuditController {
 		return new ResponseEntity<String>("Save Resource Successfull!!", HttpStatus.OK);
 	}
 	
+	@PostMapping("/deleteResource")
+	ResponseEntity<String> deleteResource(@RequestBody Resource resource) {
+		resourceRepository.delete(resource);
+		return new ResponseEntity<String>("Delete Resource Successfull!!", HttpStatus.OK);
+	}
+	
 	@GetMapping("/getResources")
 	ResponseEntity<List<Resource>> findAll() {
 		List<Resource> l = resourceRepository.findAll();

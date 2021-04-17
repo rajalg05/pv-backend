@@ -13,4 +13,6 @@ public interface ResourceRepository extends CrudRepository<Resource, String> {
     List<Resource> findAll();
  
     Resource save(Resource resource);
+    
+    void delete(Resource resource);
 }
