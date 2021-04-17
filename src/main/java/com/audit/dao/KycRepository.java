@@ -13,4 +13,6 @@ public interface KycRepository extends CrudRepository<KYC, String> {
     List<KYC> findAll();
  
     KYC save(KYC kyc);
+    
+    void delete(KYC kyc);
 }

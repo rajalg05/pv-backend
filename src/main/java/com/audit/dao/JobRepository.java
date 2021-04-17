@@ -13,4 +13,6 @@ public interface JobRepository extends CrudRepository<Job, String> {
     List<Job> findAll();
  
     Job save(Job job);
+    
+    void delete(Job job);
 }

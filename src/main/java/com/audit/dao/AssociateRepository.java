@@ -13,4 +13,6 @@ public interface AssociateRepository extends CrudRepository<Associate, String> {
     List<Associate> findAll();
  
     Associate save(Associate associate);
+    
+    void delete(Associate associate);
 }

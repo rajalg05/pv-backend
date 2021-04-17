@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.audit.dao.AssociateRepository;
+import com.audit.dao.AuditRepository;
 import com.audit.dao.JobRepository;
-import com.audit.dao.PvRepository;
 import com.audit.dao.ResourceRepository;
 import com.audit.model.Associate;
-import com.audit.model.Job;
+import com.audit.model.Audit;
 import com.audit.model.Resource;
 
 @RestController
@@ -38,9 +38,6 @@ public class AuditController {
 	DataSource dataSource;
 
 	@Autowired
-	PvRepository pvRepository;
-	
-	@Autowired
 	ResourceRepository resourceRepository;
 
 	@Autowired
@@ -50,6 +47,9 @@ public class AuditController {
 	@Autowired
 	JobRepository jobRepository;
 
+	@Autowired
+	AuditRepository auditRepository;
+	
 	@PostMapping("/saveResource")
 	ResponseEntity<String> saveResource(@RequestBody Resource resource) {
 		resourceRepository.save(resource);
@@ -88,22 +88,34 @@ public class AuditController {
 		}
 	} 
 
-
-	@PostMapping("/saveJob")
-	ResponseEntity<String> saveJob(@RequestBody Job job) {
-		jobRepository.save(job);
-		return new ResponseEntity<String>("Save Job Successfull!!", HttpStatus.OK);
+	@PostMapping("/deleteAssociate")
+	ResponseEntity<String> deleteAssociate(@RequestBody Associate associate) {
+		associateRepository.delete(associate);
+		return new ResponseEntity<String>("Delete Resource Successfull!!", HttpStatus.OK);
 	}
 	
-	@GetMapping("/findAllJobs")
-	ResponseEntity<List<Job>> findAllJobs() {
-		List<Job> l = jobRepository.findAll();
+	@PostMapping("/saveAudit")
+	ResponseEntity<String> saveAudit(@RequestBody Audit Audit) {
+		auditRepository.save(Audit);
+		return new ResponseEntity<String>("Save Audit Successfull!!", HttpStatus.OK);
+	}
+	
+	@GetMapping("/findAllAudits")
+	ResponseEntity<List<Audit>> findAllAudits() {
+		List<Audit> l = auditRepository.findAll();
 		if(l.size() > 0) {
 			return ResponseEntity.ok(l);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-	} 
+	}  
+	
+	@PostMapping("/deleteAudit")
+	ResponseEntity<String> deleteAudit(@RequestBody Audit audit) {
+		auditRepository.delete(audit);
+		return new ResponseEntity<String>("Delete Audit Successfull!!", HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("/sendMail")
 	String sendMail() {

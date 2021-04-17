@@ -13,4 +13,6 @@ public interface BasicContactDetailRepository extends CrudRepository<BasicContac
     List<BasicContactDetail> findAll();
  
     BasicContactDetail save(BasicContactDetail basicContactDetail);
+    
+    void delete(BasicContactDetail basicContactDetail);
 }

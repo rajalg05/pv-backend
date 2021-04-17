@@ -14,4 +14,5 @@ public interface AddressRepository extends CrudRepository<Address, String> {
  
     Address save(Address address);
    
+    void delete(Address address);
 }

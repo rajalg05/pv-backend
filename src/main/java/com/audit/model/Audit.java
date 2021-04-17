@@ -2,21 +2,44 @@ package com.audit.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "audit")
 public class Audit {
 	
-	public int jobId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int id;
+	
+	@ManyToOne( cascade = CascadeType.ALL) 
+	public Job job;
+	
 	public String auditStatus;
-    public LocalDateTime dateOfAudit;
-    public int auditLocationAddressId;
-    public String statusUpdatedBy;
-    public Double paymentReceived;
-    public LocalDateTime createdTs;
-    public LocalDateTime updatedTs;
-	public int getJobId() {
-		return jobId;
+    
+	public LocalDateTime dateOfAudit;
+    
+	public int auditLocationAddressId;
+    
+	public String statusUpdatedBy;
+    
+	public Double paymentReceived;
+    
+	public LocalDateTime createdTs;
+    
+	public LocalDateTime updatedTs;
+	
+    public Job getJob() {
+		return job;
 	}
-	public void setJobId(int jobId) {
-		this.jobId = jobId;
+	public void setJob(Job job) {
+		this.job = job;
 	}
 	public String getAuditStatus() {
 		return auditStatus;
