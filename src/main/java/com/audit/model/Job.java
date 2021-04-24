@@ -1,16 +1,25 @@
 package com.audit.model;
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "job")
-public class Job {
+public class Job implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
@@ -18,6 +27,9 @@ public class Job {
 	@ManyToOne( cascade = CascadeType.ALL) 
 	public Associate associate;
 
+	@OneToMany( cascade = CascadeType.ALL) 
+	public List<Audit> audits;
+	
 	public String jobName;
 	
 	public String clientName;
@@ -40,6 +52,14 @@ public class Job {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+ 
+	public List<Audit> getAudits() {
+		return audits;
+	}
+
+	public void setAudits(List<Audit> audits) {
+		this.audits = audits;
 	}
 
 	public String getJobName() {

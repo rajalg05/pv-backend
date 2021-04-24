@@ -29,12 +29,15 @@ import com.audit.model.Associate;
 import com.audit.model.Audit;
 import com.audit.model.Job;
 import com.audit.model.Resource;
+import com.google.gson.Gson;
 
 @RestController
 @RequestMapping("/audit")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuditController {
 
+	private static final Gson gson = new Gson();
+	
 	@Autowired
 	DataSource dataSource;
 
@@ -54,13 +57,13 @@ public class AuditController {
 	@PostMapping("/saveResource")
 	ResponseEntity<String> saveResource(@RequestBody Resource resource) {
 		resourceRepository.save(resource);
-		return new ResponseEntity<String>("Save Resource Successfull!!", HttpStatus.OK);
+		return new ResponseEntity<String>(gson.toJson("Save Resource Successfull!!"), HttpStatus.OK);
 	}
 	
 	@PostMapping("/deleteResource")
 	ResponseEntity<String> deleteResource(@RequestBody Resource resource) {
 		resourceRepository.delete(resource);
-		return new ResponseEntity<String>("Delete Resource Successfull!!", HttpStatus.OK);
+		return new ResponseEntity<String>(gson.toJson("Delete Resource Successfull!!"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getResources")
@@ -76,7 +79,7 @@ public class AuditController {
 	@PostMapping("/saveAssociate")
 	ResponseEntity<String> saveAssociate(@RequestBody Associate associate) {
 		associateRepository.save(associate);
-		return new ResponseEntity<String>("Save Associate Successfull!!", HttpStatus.OK);
+		return new ResponseEntity<String>(gson.toJson("Save Associate Successfull!!"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/findAllAssociates")
@@ -92,13 +95,13 @@ public class AuditController {
 	@PostMapping("/deleteAssociate")
 	ResponseEntity<String> deleteAssociate(@RequestBody Associate associate) {
 		associateRepository.delete(associate);
-		return new ResponseEntity<String>("Delete Resource Successfull!!", HttpStatus.OK);
+		return new ResponseEntity<String>(gson.toJson("Delete Resource Successfull!!"), HttpStatus.OK);
 	}
 	
 	@PostMapping("/saveJob")
 	ResponseEntity<String> saveJob(@RequestBody Job job) {
 		jobRepository.save(job);
-		return new ResponseEntity<String>("Save Job Successfull!!", HttpStatus.OK);
+		return new ResponseEntity<String>(gson.toJson("Save Job Successfull!!"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/findAllJobs")
@@ -114,13 +117,13 @@ public class AuditController {
 	@PostMapping("/deleteJob")
 	ResponseEntity<String> deleteJob(@RequestBody Job job) {
 		jobRepository.delete(job);
-		return new ResponseEntity<String>("Delete Job Successfull!!", HttpStatus.OK);
+		return new ResponseEntity<String>(gson.toJson("Delete Job Successfull!!"), HttpStatus.OK);
 	}
 	
 	@PostMapping("/saveAudit")
-	ResponseEntity<String> saveAudit(@RequestBody Audit Audit) {
-		auditRepository.save(Audit);
-		return new ResponseEntity<String>("Save Audit Successfull!!", HttpStatus.OK);
+	ResponseEntity<String> saveAudit(@RequestBody Audit audit) {
+		auditRepository.save(audit);
+		return new ResponseEntity<String>(gson.toJson("Save Audit Successfull!!"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/findAllAudits")
@@ -136,7 +139,7 @@ public class AuditController {
 	@PostMapping("/deleteAudit")
 	ResponseEntity<String> deleteAudit(@RequestBody Audit audit) {
 		auditRepository.delete(audit);
-		return new ResponseEntity<String>("Delete Audit Successfull!!", HttpStatus.OK);
+		return new ResponseEntity<String>(gson.toJson("Delete Audit Successfull!!"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/sendMail")

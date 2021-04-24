@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,14 +19,17 @@ public class Audit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 	
-	@ManyToOne( cascade = CascadeType.ALL) 
+	@OneToOne( cascade = CascadeType.ALL) 
 	public Job job;
+	
+	@OneToOne( cascade = CascadeType.ALL) 
+	public Address address;
 	
 	public String auditStatus;
     
 	public LocalDateTime dateOfAudit;
     
-	public int auditLocationAddressId;
+	//public int auditLocationAddressId;
     
 	public String statusUpdatedBy;
     
@@ -52,13 +56,7 @@ public class Audit {
 	}
 	public void setDateOfAudit(LocalDateTime dateOfAudit) {
 		this.dateOfAudit = dateOfAudit;
-	}
-	public int getAuditLocationAddressId() {
-		return auditLocationAddressId;
-	}
-	public void setAuditLocationAddressId(int auditLocationAddressId) {
-		this.auditLocationAddressId = auditLocationAddressId;
-	}
+	} 
 	public String getStatusUpdatedBy() {
 		return statusUpdatedBy;
 	}
