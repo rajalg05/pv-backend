@@ -1,0 +1,19 @@
+package com.audit.dao;
+
+import java.util.List;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import com.audit.model.User;
+
+@Repository
+public interface UserRepository extends CrudRepository<User, String> {
+
+    List<User> findAll();
+ 
+    User save(User user);
+   
+    void delete(User user);
+     
+}

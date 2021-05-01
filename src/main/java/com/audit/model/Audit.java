@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -19,7 +20,8 @@ public class Audit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 	
-	@OneToOne( cascade = CascadeType.ALL) 
+	@ManyToOne
+	@JoinColumn(name = "id",insertable = false, updatable = false)
 	public Job job;
 	
 	@OneToOne( cascade = CascadeType.ALL) 
@@ -38,12 +40,24 @@ public class Audit {
 	public LocalDateTime createdTs;
     
 	public LocalDateTime updatedTs;
-	
-    public Job getJob() {
+	 
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Job getJob() {
 		return job;
 	}
 	public void setJob(Job job) {
 		this.job = job;
+	}
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	public String getAuditStatus() {
 		return auditStatus;

@@ -2,6 +2,7 @@ package com.audit.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -27,8 +28,8 @@ public class Job implements Serializable {
 	@ManyToOne( cascade = CascadeType.ALL) 
 	public Associate associate;
 
-	@OneToMany( cascade = CascadeType.ALL) 
-	public List<Audit> audits;
+	@OneToMany( mappedBy = "job", cascade = CascadeType.ALL) 
+	public Set<Audit> audits;
 	
 	public String jobName;
 	
@@ -53,12 +54,12 @@ public class Job implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
- 
-	public List<Audit> getAudits() {
+  
+	public Set<Audit> getAudits() {
 		return audits;
 	}
 
-	public void setAudits(List<Audit> audits) {
+	public void setAudits(Set<Audit> audits) {
 		this.audits = audits;
 	}
 

@@ -25,10 +25,12 @@ import com.audit.dao.AssociateRepository;
 import com.audit.dao.AuditRepository;
 import com.audit.dao.JobRepository;
 import com.audit.dao.ResourceRepository;
+import com.audit.dao.UserRepository;
 import com.audit.model.Associate;
 import com.audit.model.Audit;
 import com.audit.model.Job;
 import com.audit.model.Resource;
+import com.audit.model.User;
 import com.google.gson.Gson;
 
 @RestController
@@ -54,6 +56,48 @@ public class AuditController {
 	@Autowired
 	AuditRepository auditRepository;
 	
+	@Autowired
+	UserRepository userRepository;
+	
+	
+	@PostMapping("/saveUser")
+	ResponseEntity<String> saveUser(@RequestBody User user) {
+		List<User> l = userRepository.findAll();
+		boolean userExists = false;
+		for(User userCheck : l) {
+			if(!userCheck.getUserName().equals(user.getUserName())) {
+				continue;
+			} else {
+				userExists = true;
+				break;
+			}
+		}
+		 	if (!userExists) {
+		 		userRepository.save(user);
+		 		return new ResponseEntity<String>(gson.toJson("Save User Successfull!!"), HttpStatus.OK);
+		 	}
+				
+			else 
+				return new ResponseEntity<String>(gson.toJson("user exists"),  HttpStatus.OK);
+	}
+	
+	@PostMapping("/deleteUser")
+	ResponseEntity<String> deleteUser(@RequestBody User user) {
+		userRepository.delete(user);
+		return new ResponseEntity<String>(gson.toJson("Delete User Successfull!!"), HttpStatus.OK);
+	}
+	
+	@GetMapping("/getUsers")
+	ResponseEntity<List<User>> findAllUsers() {
+		List<User> l = userRepository.findAll();
+		if(l.size() > 0) {
+			return ResponseEntity.ok(l);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	
 	@PostMapping("/saveResource")
 	ResponseEntity<String> saveResource(@RequestBody Resource resource) {
 		resourceRepository.save(resource);
@@ -67,7 +111,7 @@ public class AuditController {
 	}
 	
 	@GetMapping("/getResources")
-	ResponseEntity<List<Resource>> findAll() {
+	ResponseEntity<List<Resource>> findAllResources() {
 		List<Resource> l = resourceRepository.findAll();
 		if(l.size() > 0) {
 			return ResponseEntity.ok(l);
