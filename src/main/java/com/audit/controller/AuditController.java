@@ -171,10 +171,6 @@ public class AuditController {
 	@GetMapping("/findAllJobs")
 	ResponseEntity<List<Job>> findAllJobs() {
 		List<Job> l = jobRepository.findAll();
-		for(Job j : l) {
-			List<Audit> audits = auditRepository.getAuditById(j.getId());
-				j.setAudits(audits);
-		}
 		if (l.size() > 0) {
 			return ResponseEntity.ok(l);
 		} else {
