@@ -12,35 +12,39 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "audit")
 public class Audit {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
-	
-	@ManyToOne
-	@JoinColumn(name = "id",insertable = false, updatable = false)
-	public Job job;
-	
 	@OneToOne( cascade = CascadeType.ALL) 
 	public Address address;
 	
+	public String auditName;
+	
 	public String auditStatus;
-    
+
 	public LocalDateTime dateOfAudit;
     
-	//public int auditLocationAddressId;
-    
-	public String statusUpdatedBy;
-    
+	@JsonIgnore
+	@ManyToOne( cascade = CascadeType.ALL) 
+	@JoinColumn(name = "jobId",referencedColumnName = "id",insertable = false, updatable = false)
+	public Job job;
+	
+	public int jobId; 
+	
 	public Double paymentReceived;
+	
+	public String statusUpdatedBy;
     
 	public LocalDateTime createdTs;
     
 	public LocalDateTime updatedTs;
-	 
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int id; 
+	
 	public int getId() {
 		return id;
 	}
@@ -59,6 +63,13 @@ public class Audit {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+	
+	public String getAuditName() {
+		return auditName;
+	}
+	public void setAuditName(String auditName) {
+		this.auditName = auditName;
+	}
 	public String getAuditStatus() {
 		return auditStatus;
 	}
@@ -76,6 +87,12 @@ public class Audit {
 	}
 	public void setStatusUpdatedBy(String statusUpdatedBy) {
 		this.statusUpdatedBy = statusUpdatedBy;
+	}
+	public int getJobId() {
+		return jobId;
+	}
+	public void setJobId(int jobId) {
+		this.jobId = jobId;
 	}
 	public Double getPaymentReceived() {
 		return paymentReceived;

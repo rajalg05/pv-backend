@@ -25,14 +25,14 @@ public class Job implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 
-	@ManyToOne( cascade = CascadeType.ALL) 
+	@ManyToOne(cascade = CascadeType.ALL)
 	public Associate associate;
 
-	@OneToMany( mappedBy = "job", cascade = CascadeType.ALL) 
-	public Set<Audit> audits;
-	
+	@OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
+	public List<Audit> audits;
+
 	public String jobName;
-	
+
 	public String clientName;
 
 	public String frequencyOfAudit;
@@ -54,12 +54,12 @@ public class Job implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-  
-	public Set<Audit> getAudits() {
+ 
+	public List<Audit> getAudits() {
 		return audits;
 	}
 
-	public void setAudits(Set<Audit> audits) {
+	public void setAudits(List<Audit> audits) {
 		this.audits = audits;
 	}
 
@@ -69,8 +69,8 @@ public class Job implements Serializable {
 
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
-	} 
-	
+	}
+
 	public String getClientName() {
 		return clientName;
 	}

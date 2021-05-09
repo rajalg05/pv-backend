@@ -15,4 +15,6 @@ public interface AuditRepository extends CrudRepository<Audit, String> {
     Audit save(Audit audit);
    
     void delete(Audit audit);
+    
+    List<Audit> getAuditById(int id);
 }
