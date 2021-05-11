@@ -16,5 +16,5 @@ public interface AuditRepository extends CrudRepository<Audit, String> {
    
     void delete(Audit audit);
     
-    List<Audit> getAuditById(int id);
+    List<Audit> getAuditByjobId(int id);
 }

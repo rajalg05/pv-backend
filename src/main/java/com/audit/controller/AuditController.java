@@ -1,10 +1,9 @@
 package com.audit.controller;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -171,10 +170,14 @@ public class AuditController {
 	@GetMapping("/findAllJobs")
 	ResponseEntity<List<Job>> findAllJobs() {
 		List<Job> l = jobRepository.findAll();
+		for(Job j : l) {
+			List<Audit> audits = auditRepository.getAuditByjobId(j.getId());
+				j.setAudits(audits);
+		}
 		if (l.size() > 0) {
 			return ResponseEntity.ok(l);
 		} else {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok(null);
 		}
 	}
 
@@ -209,7 +212,7 @@ public class AuditController {
 		// Sender's email ID needs to be mentioned
 		String from = "lalatendu.guru@gmail.com";
 		final String username = "rajalg05";// change accordingly
-		final String password = "Mahavir123#";// change accordingly
+		
 
 		// Assuming you are sending email from localhost
 		String host = "localhost";
