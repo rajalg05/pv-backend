@@ -19,7 +19,7 @@ public class BasicContactDetail {
 	
 	public String whatsappCountryCode;
 		
-	public int whatsappMobileNumber;
+	public String whatsappMobileNumber;
 	
 	public String email;
 	
@@ -56,12 +56,12 @@ public class BasicContactDetail {
 	public void setWhatsappcountrycode(String whatsappCountryCode) {
 		this.whatsappCountryCode = whatsappCountryCode;
 	}
-
-	public int getWhatsappmobilenumber() {
+ 
+	public String getWhatsappMobileNumber() {
 		return whatsappMobileNumber;
 	}
 
-	public void setWhatsappmobilenumber(int whatsappMobileNumber) {
+	public void setWhatsappMobileNumber(String whatsappMobileNumber) {
 		this.whatsappMobileNumber = whatsappMobileNumber;
 	}
 

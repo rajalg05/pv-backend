@@ -154,11 +154,9 @@ public class AuditController {
 
 	@PostMapping("/saveJob")
 	ResponseEntity<String> saveJob(@RequestBody Job job) {
-//		List<Audit> audits = job.getAudits();
-//		for(Audit audit: audits) {
-//			audit.setJob(job);
-//		}
-		jobRepository.save(job);
+		Job j = jobRepository.getJobByJobName(job.getJobName());
+		if(j == null) 
+			jobRepository.save(job);
 		return new ResponseEntity<String>(gson.toJson("Save Job Successfull!!"), HttpStatus.OK);
 	}
 

@@ -15,4 +15,6 @@ public interface JobRepository extends CrudRepository<Job, String> {
     Job save(Job job);
     
     void delete(Job job);
+    
+	Job getJobByJobName(String jobName);
 }

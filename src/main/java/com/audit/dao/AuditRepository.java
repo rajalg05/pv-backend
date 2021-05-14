@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.audit.model.Audit;
+import com.audit.model.Job;
 
 @Repository
 public interface AuditRepository extends CrudRepository<Audit, String> {
@@ -17,4 +18,6 @@ public interface AuditRepository extends CrudRepository<Audit, String> {
     void delete(Audit audit);
     
     List<Audit> getAuditByjobId(int id);
+
+
 }
