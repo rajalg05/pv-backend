@@ -1,5 +1,6 @@
 package com.audit.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,13 +22,17 @@ public class KYC {
 	
 	public String secondKycType;
 	
-	public String firstKycFrontImagePath;
+	@Column(length = 1000)
+	public byte[] firstKycFrontImagePath;
 	
-	public String firstKycBackImagePath;
+	@Column(length = 1000)
+	public byte[] firstKycBackImagePath;
 	
-	public String secondKycFrontImagePath;
+	@Column(length = 1000)
+	public byte[] secondKycFrontImagePath;
 	
-	public String secondKycBackImagePath;
+	@Column(length = 1000)
+	public byte[] secondKycBackImagePath;
 	
 	public java.util.Date createdTs;
 
@@ -70,36 +75,36 @@ public class KYC {
 	public void setSecondkyctype(String secondKycType) {
 		this.secondKycType = secondKycType;
 	}
-
-	public String getFirstkycfrontimagepath() {
+ 
+	public byte[] getFirstKycFrontImagePath() {
 		return firstKycFrontImagePath;
 	}
 
-	public void setFirstkycfrontimagepath(String firstKycFrontImagePath) {
+	public void setFirstKycFrontImagePath(byte[] firstKycFrontImagePath) {
 		this.firstKycFrontImagePath = firstKycFrontImagePath;
 	}
 
-	public String getFirstkycbackimagepath() {
+	public byte[] getFirstKycBackImagePath() {
 		return firstKycBackImagePath;
 	}
 
-	public void setFirstkycbackimagepath(String firstKycBackImagePath) {
+	public void setFirstKycBackImagePath(byte[] firstKycBackImagePath) {
 		this.firstKycBackImagePath = firstKycBackImagePath;
 	}
 
-	public String getSecondkycfrontimagepath() {
+	public byte[] getSecondKycFrontImagePath() {
 		return secondKycFrontImagePath;
 	}
 
-	public void setSecondkycfrontimagepath(String secondKycFrontImagePath) {
+	public void setSecondKycFrontImagePath(byte[] secondKycFrontImagePath) {
 		this.secondKycFrontImagePath = secondKycFrontImagePath;
 	}
 
-	public String getSecondkycbackimagepath() {
+	public byte[] getSecondKycBackImagePath() {
 		return secondKycBackImagePath;
 	}
 
-	public void setSecondkycbackimagepath(String secondKycBackImagePath) {
+	public void setSecondKycBackImagePath(byte[] secondKycBackImagePath) {
 		this.secondKycBackImagePath = secondKycBackImagePath;
 	}
 

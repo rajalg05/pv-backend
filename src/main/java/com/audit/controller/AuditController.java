@@ -1,6 +1,5 @@
 package com.audit.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -33,6 +32,7 @@ import com.audit.model.Audit;
 import com.audit.model.Job;
 import com.audit.model.Resource;
 import com.audit.model.User;
+import com.audit.utils.PvUtils;
 import com.google.gson.Gson;
 
 @RestController
@@ -60,15 +60,17 @@ public class AuditController {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	PvUtils pvUtils;
+	
 	@PostMapping("/login")
 	ResponseEntity<String> login(@RequestBody User user) {
 		Optional<User> o = userRepository.findByUserName(user.getUserName());
-		System.out.println("DB password= " + o.get().getPassword());
-		System.out.println("user password" + user.getPassword());
-		//if (o.get() != null && o.get().getPassword().equals(user.getPassword())) {
+		if (o.get() != null &&  pvUtils.decrypt(o.get().getPassword()).equals(pvUtils.decrypt(user.getPassword()))) {
 			return new ResponseEntity<String>(gson.toJson("Login successful"), HttpStatus.OK);
-		//}
-		//return new ResponseEntity<String>(gson.toJson("User is not registered"), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>(gson.toJson("Username and/or Password incorrect"), HttpStatus.NOT_ACCEPTABLE);
+		}
 	}
 
 	@PostMapping("/saveUser")
