@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class BasicContactDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	public Long id;
 	
 	public String firstName;
 	
@@ -25,11 +25,11 @@ public class BasicContactDetail {
 	
 	public java.util.Date createdTs;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

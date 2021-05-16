@@ -1,5 +1,7 @@
 package com.audit.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +15,7 @@ import javax.persistence.Table;
 public class Associate {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	public Long id;
 	
 	@OneToOne( cascade = CascadeType.ALL) 
 	public BasicContactDetail basicContactDetail;  
@@ -28,11 +30,24 @@ public class Associate {
 	
 	public java.util.Date updatedTs;
 
-	public int getId() {
+	public Associate() {
+		super();
+	}
+
+	public Associate(BasicContactDetail basicContactDetail, KYC kyc, Address address, Date createdTs, Date updatedTs) {
+		super();
+		this.basicContactDetail = basicContactDetail;
+		this.kyc = kyc;
+		this.address = address;
+		this.createdTs = createdTs;
+		this.updatedTs = updatedTs;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
  

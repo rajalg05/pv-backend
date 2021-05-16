@@ -1,6 +1,7 @@
 package com.audit.model;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,13 +27,16 @@ public class Audit {
 	public String auditStatus;
 
 	public LocalDateTime dateOfAudit;
-    
+	
+    @OneToMany(mappedBy = "audit")
+	Set<AuditAllocation> auditAllocations;
+	
 	@JsonIgnore
 	@ManyToOne( cascade = CascadeType.ALL) 
 	@JoinColumn(name = "jobId",referencedColumnName = "id",insertable = false, updatable = false)
 	public Job job;
 	
-	public int jobId; 
+	public Long jobId; 
 	
 	public Double paymentReceived;
 	
@@ -41,14 +46,35 @@ public class Audit {
     
 	public LocalDateTime updatedTs;
 	
+	public Audit(Address address, String auditName, String auditStatus, LocalDateTime dateOfAudit,
+			Set<AuditAllocation> auditAllocations, Job job, Long jobId, Double paymentReceived, String statusUpdatedBy,
+			LocalDateTime createdTs, LocalDateTime updatedTs) {
+		super();
+		this.address = address;
+		this.auditName = auditName;
+		this.auditStatus = auditStatus;
+		this.dateOfAudit = dateOfAudit;
+		this.auditAllocations = auditAllocations;
+		this.job = job;
+		this.jobId = jobId;
+		this.paymentReceived = paymentReceived;
+		this.statusUpdatedBy = statusUpdatedBy;
+		this.createdTs = createdTs;
+		this.updatedTs = updatedTs;
+	}
+	
+	public Audit() {
+		super();
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id; 
+	public Long id; 
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public Job getJob() {
@@ -88,10 +114,10 @@ public class Audit {
 	public void setStatusUpdatedBy(String statusUpdatedBy) {
 		this.statusUpdatedBy = statusUpdatedBy;
 	}
-	public int getJobId() {
+	public Long getJobId() {
 		return jobId;
 	}
-	public void setJobId(int jobId) {
+	public void setJobId(Long jobId) {
 		this.jobId = jobId;
 	}
 	public Double getPaymentReceived() {

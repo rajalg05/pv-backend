@@ -1,6 +1,5 @@
 package com.audit.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -23,16 +22,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.audit.dao.AssociateRepository;
-import com.audit.dao.AuditRepository;
-import com.audit.dao.JobRepository;
-import com.audit.dao.ResourceRepository;
-import com.audit.dao.UserRepository;
 import com.audit.model.Associate;
 import com.audit.model.Audit;
+import com.audit.model.AuditAllocation;
 import com.audit.model.Job;
 import com.audit.model.Resource;
 import com.audit.model.User;
+import com.audit.repository.AssociateRepository;
+import com.audit.repository.AuditAllocationRepository;
+import com.audit.repository.AuditRepository;
+import com.audit.repository.JobRepository;
+import com.audit.repository.ResourceRepository;
+import com.audit.repository.UserRepository;
 import com.google.gson.Gson;
 
 @RestController
@@ -56,6 +57,9 @@ public class AuditController {
 
 	@Autowired
 	AuditRepository auditRepository;
+	
+	@Autowired
+	AuditAllocationRepository auditAllocationRepository;
 
 	@Autowired
 	UserRepository userRepository;
@@ -73,22 +77,14 @@ public class AuditController {
 
 	@PostMapping("/saveUser")
 	ResponseEntity<String> saveUser(@RequestBody User user) {
-		List<User> l = userRepository.findAll();
-		boolean userExists = false;
-		for (User userCheck : l) {
-			if (!userCheck.getUserName().equals(user.getUserName())) {
-				continue;
-			} else {
-				userExists = true;
-				break;
-			}
-		}
+		Optional<User> dbUser = userRepository.findByUserName(user.getUserName());
+		
+		boolean userExists = dbUser.isPresent();
+		
 		if (!userExists) {
 			userRepository.save(user);
 			return new ResponseEntity<String>(gson.toJson("Save User Successfull!!"), HttpStatus.OK);
-		}
-
-		else
+		} else
 			return new ResponseEntity<String>(gson.toJson("user exists"), HttpStatus.OK);
 	}
 
@@ -137,7 +133,7 @@ public class AuditController {
 	}
 
 	@GetMapping("/findAllAssociates")
-	ResponseEntity<List<Associate>> findAllAssociate() {
+	ResponseEntity<List<Associate>> findAllAssociates() {
 		List<Associate> l = associateRepository.findAll();
 		if (l.size() > 0) {
 			return ResponseEntity.ok(l);
@@ -170,7 +166,9 @@ public class AuditController {
 		List<Job> l = jobRepository.findAll();
 		for(Job j : l) {
 			List<Audit> audits = auditRepository.getAuditByjobId(j.getId());
+			if(null != audits && audits.size() > 0) {
 				j.setAudits(audits);
+			}
 		}
 		if (l.size() > 0) {
 			return ResponseEntity.ok(l);
@@ -202,6 +200,24 @@ public class AuditController {
 		return new ResponseEntity<String>(gson.toJson("Delete Audit Successfull!!"), HttpStatus.OK);
 	}
 
+	@PostMapping("/allocateAudits")
+	ResponseEntity<String> allocateAudits(@RequestBody List<AuditAllocation> auditAllocations) {
+		for(AuditAllocation auditAllocation : auditAllocations) {
+			auditAllocationRepository.save(auditAllocation);
+
+		}
+		return new ResponseEntity<String>(gson.toJson("Allocated Audit Successfull!!"), HttpStatus.OK);
+	}
+
+	@PostMapping("/unallocateAudits")
+	ResponseEntity<String> unallocateAudits(@RequestBody List<AuditAllocation> auditAllocations) {
+		for(AuditAllocation auditAllocation : auditAllocations) {
+			auditAllocationRepository.delete(auditAllocation);
+
+		}
+		return new ResponseEntity<String>(gson.toJson("Unllocated Audit Successfull!!"), HttpStatus.OK);
+	}
+	
 	@GetMapping("/sendMail")
 	String sendMail() {
 		// Recipient's email ID needs to be mentioned.

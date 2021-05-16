@@ -1,10 +1,14 @@
 package com.audit.model;
 
+import java.util.Date;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -12,9 +16,31 @@ import javax.persistence.Table;
 @Table(name = "resource")
 public class Resource {
 	
+	
+	public Resource(BasicContactDetail basicContactDetail, KYC kyc, Address address,
+			Set<AuditAllocation> auditAllocations, Date dateOfBirth, String qualification, String excelSkills,
+			String stockAuditExp, String resourceType, Boolean ownsBike, Date createdTs, Date updatedTs) {
+		super();
+		this.basicContactDetail = basicContactDetail;
+		this.kyc = kyc;
+		this.address = address;
+		this.auditAllocations = auditAllocations;
+		this.dateOfBirth = dateOfBirth;
+		this.qualification = qualification;
+		this.excelSkills = excelSkills;
+		this.stockAuditExp = stockAuditExp;
+		this.resourceType = resourceType;
+		this.ownsBike = ownsBike;
+		this.createdTs = createdTs;
+		this.updatedTs = updatedTs;
+	}
+
+	public Resource() {
+		super();
+	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	public Long id;
 	
 	@OneToOne( cascade = CascadeType.ALL) 
 	public BasicContactDetail basicContactDetail;  
@@ -24,7 +50,10 @@ public class Resource {
 	
 	@OneToOne( cascade = CascadeType.ALL)
 	public Address address;
-	 
+	
+	@OneToMany(mappedBy = "resource")
+	Set<AuditAllocation> auditAllocations;
+	
 	public java.util.Date dateOfBirth;
 	
 	public String qualification;
@@ -35,20 +64,28 @@ public class Resource {
 	
 	public String resourceType;
 	
-	public String bike; 
+	public Boolean ownsBike; 
 	
 	public java.util.Date createdTs;
 	
 	public java.util.Date updatedTs;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
  
+	public Boolean getOwnsBike() {
+		return ownsBike;
+	}
+
+	public void setOwnsBike(Boolean ownsBike) {
+		this.ownsBike = ownsBike;
+	}
+
 	public BasicContactDetail getBasicContactDetail() {
 		return basicContactDetail;
 	}
@@ -112,14 +149,6 @@ public class Resource {
 	public void setResourcetype(String resourceType) {
 		this.resourceType = resourceType;
 	}
-
-	public String getBike() {
-		return bike;
-	}
-
-	public void setBike(String bike) {
-		this.bike = bike;
-	} 
 	
 	public java.util.Date getCreatedts() {
 		return createdTs;

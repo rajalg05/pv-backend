@@ -1,4 +1,4 @@
-package com.audit.dao;
+package com.audit.repository;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.audit.model.Audit;
-import com.audit.model.Job;
 
 @Repository
 public interface AuditRepository extends CrudRepository<Audit, String> {
@@ -17,7 +16,7 @@ public interface AuditRepository extends CrudRepository<Audit, String> {
    
     void delete(Audit audit);
     
-    List<Audit> getAuditByjobId(int id);
+    List<Audit> getAuditByjobId(Long jobId);
 
 
 }

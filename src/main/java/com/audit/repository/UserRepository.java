@@ -1,4 +1,4 @@
-package com.audit.dao;
+package com.audit.repository;
 
 import java.util.List;
 import java.util.Optional;

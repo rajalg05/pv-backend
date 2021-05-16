@@ -1,8 +1,8 @@
 package com.audit.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,9 +21,27 @@ public class Job implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public Job(Associate associate, String jobName, String clientName, String frequencyOfAudit, String paymentType,
+			double totalPayment, int resourcesNeeded, Date createdTs, Date updatedTs) {
+		super();
+		this.associate = associate;
+		this.jobName = jobName;
+		this.clientName = clientName;
+		this.frequencyOfAudit = frequencyOfAudit;
+		this.paymentType = paymentType;
+		this.totalPayment = totalPayment;
+		this.resourcesNeeded = resourcesNeeded;
+		this.createdTs = createdTs;
+		this.updatedTs = updatedTs;
+	}
+
+	public Job() {
+		super();
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	public Long id;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	public Associate associate;
@@ -46,15 +64,15 @@ public class Job implements Serializable {
 	public java.util.Date createdTs;
 
 	public java.util.Date updatedTs;
-
-	public int getId() {
+ 
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
- 
+
 	public List<Audit> getAudits() {
 		return audits;
 	}
