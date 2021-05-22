@@ -12,6 +12,8 @@ public interface JobRepository extends CrudRepository<Job, String> {
 
     List<Job> findAll();
  
+    List<Job> findAllJobsForAssociate(Long associateId);
+    
     Job save(Job job);
     
     void delete(Job job);

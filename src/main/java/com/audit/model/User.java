@@ -1,9 +1,11 @@
 package com.audit.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,22 +20,22 @@ public class User {
 	String lastName;
 	String userName;
 	String password;
-	String role;
 	String status;
 	String comments;
 	
+	@OneToOne( cascade = CascadeType.ALL) 
+	public Role role;
 
 	public User() {
 		super();
 	}
-	public User(String firstName, String lastName, String userName, String password, String role, String status,
+	public User(String firstName, String lastName, String userName, String password, int roleId, String status,
 			String comments) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userName = userName;
 		this.password = password;
-		this.role = role;
 		this.status = status;
 		this.comments = comments;
 	}
@@ -61,12 +63,6 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
 	}
 	public String getStatus() {
 		return status;

@@ -170,7 +170,7 @@ public class AuditControllerTest {
        // when(userRepository.findByUserName(any(String.class)))
         	//.thenReturn(null);
 
-        User User = new User(null, null, null, null, null, null, null);
+        User User = new User();
         ResponseEntity<String> responseEntity = auditController.saveUser(User);
          
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
@@ -182,7 +182,7 @@ public class AuditControllerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
                   
-        User User = new User(null, null, null, null, null, null, null);
+        User User = new User();
         ResponseEntity<String> responseEntity = auditController.deleteUser(User);
          
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
@@ -208,7 +208,7 @@ public class AuditControllerTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
          
         List<User> Users = new ArrayList<>();
-        Users.add(new User(null, null, null, null, null, null, null));
+        Users.add(new User());
         when(userRepository.findAll()).thenReturn(Users);
 
         ResponseEntity<List<User>> responseEntity = auditController.findAllUsers();
