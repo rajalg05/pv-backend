@@ -16,11 +16,11 @@ import javax.persistence.Table;
 @Table(name = "resource")
 public class Resource {
 	
-	
-	public Resource(BasicContactDetail basicContactDetail, KYC kyc, Address address,
+	public Resource(Long id, BasicContactDetail basicContactDetail, KYC kyc, Address address,
 			Set<AuditAllocation> auditAllocations, Date dateOfBirth, String qualification, String excelSkills,
-			String stockAuditExp, String resourceType, Boolean ownsBike, Date createdTs, Date updatedTs) {
+			String stockAuditExp, String resourceType, String bike, Date createdTs, Date updatedTs) {
 		super();
+		this.id = id;
 		this.basicContactDetail = basicContactDetail;
 		this.kyc = kyc;
 		this.address = address;
@@ -30,7 +30,7 @@ public class Resource {
 		this.excelSkills = excelSkills;
 		this.stockAuditExp = stockAuditExp;
 		this.resourceType = resourceType;
-		this.ownsBike = ownsBike;
+		this.bike = bike;
 		this.createdTs = createdTs;
 		this.updatedTs = updatedTs;
 	}
@@ -64,7 +64,7 @@ public class Resource {
 	
 	public String resourceType;
 	
-	public Boolean ownsBike; 
+	public String bike; 
 	
 	public java.util.Date createdTs;
 	
@@ -77,13 +77,13 @@ public class Resource {
 	public void setId(Long id) {
 		this.id = id;
 	}
- 
-	public Boolean getOwnsBike() {
-		return ownsBike;
+
+	public String getBike() {
+		return bike;
 	}
 
-	public void setOwnsBike(Boolean ownsBike) {
-		this.ownsBike = ownsBike;
+	public void setBike(String bike) {
+		this.bike = bike;
 	}
 
 	public BasicContactDetail getBasicContactDetail() {

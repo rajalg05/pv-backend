@@ -38,6 +38,8 @@ public class Audit {
 	
 	public Long jobId; 
 	
+	public String jobName; 
+	
 	public Double paymentReceived;
 	
 	public String statusUpdatedBy;
@@ -46,9 +48,13 @@ public class Audit {
     
 	public LocalDateTime updatedTs;
 	
+	public Audit() {
+		super();
+	}
+
 	public Audit(Address address, String auditName, String auditStatus, LocalDateTime dateOfAudit,
-			Set<AuditAllocation> auditAllocations, Job job, Long jobId, Double paymentReceived, String statusUpdatedBy,
-			LocalDateTime createdTs, LocalDateTime updatedTs) {
+			Set<AuditAllocation> auditAllocations, Job job, Long jobId, String jobName, Double paymentReceived,
+			String statusUpdatedBy, LocalDateTime createdTs, LocalDateTime updatedTs, Long id) {
 		super();
 		this.address = address;
 		this.auditName = auditName;
@@ -57,14 +63,19 @@ public class Audit {
 		this.auditAllocations = auditAllocations;
 		this.job = job;
 		this.jobId = jobId;
+		this.jobName = jobName;
 		this.paymentReceived = paymentReceived;
 		this.statusUpdatedBy = statusUpdatedBy;
 		this.createdTs = createdTs;
 		this.updatedTs = updatedTs;
+		this.id = id;
 	}
-	
-	public Audit() {
-		super();
+
+	public String getJobName() {
+		return jobName;
+	}
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
 	}
 
 	@Id
@@ -82,7 +93,8 @@ public class Audit {
 	}
 	public void setJob(Job job) {
 		this.job = job;
-	}
+	} 
+
 	public Address getAddress() {
 		return address;
 	}
