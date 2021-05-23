@@ -24,7 +24,6 @@ public class AuditAllocation {
 		this.id = id;
 	}
 	
-	
 	public AuditAllocation() {
 		super();
 	}

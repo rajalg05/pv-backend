@@ -1,6 +1,7 @@
 package com.audit.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,6 +33,9 @@ public class Audit {
     @OneToMany(mappedBy = "audit")
 	Set<AuditAllocation> auditAllocations;
 	
+    @Transient
+    List<Resource> allocatedResources; 
+    
 	@JsonIgnore
 	@ManyToOne( cascade = CascadeType.ALL) 
 	@JoinColumn(name = "jobId",referencedColumnName = "id",insertable = false, updatable = false)
@@ -132,6 +137,15 @@ public class Audit {
 	public void setJobId(Long jobId) {
 		this.jobId = jobId;
 	}
+	
+	public List<Resource> getAllocatedResources() {
+		return allocatedResources;
+	}
+
+	public void setAllocatedResources(List<Resource> allocatedResources) {
+		this.allocatedResources = allocatedResources;
+	}
+
 	public Double getPaymentReceived() {
 		return paymentReceived;
 	}

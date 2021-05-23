@@ -1,5 +1,6 @@
 package com.audit.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -58,7 +59,7 @@ public class AuditController {
 
 	@Autowired
 	AuditRepository auditRepository;
-	
+
 	@Autowired
 	AuditAllocationRepository auditAllocationRepository;
 
@@ -67,23 +68,24 @@ public class AuditController {
 
 	@Autowired
 	PvUtils pvUtils;
-	
+
 	@PostMapping("/login")
 	ResponseEntity<String> login(@RequestBody User user) {
 		Optional<User> o = userRepository.findByUserName(user.getUserName());
-		if (o.get() != null &&  pvUtils.decrypt(o.get().getPassword()).equals(pvUtils.decrypt(user.getPassword()))) {
+		if (o.get() != null && pvUtils.decrypt(o.get().getPassword()).equals(pvUtils.decrypt(user.getPassword()))) {
 			return new ResponseEntity<String>(gson.toJson("Login successful"), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<String>(gson.toJson("Username and/or Password incorrect"), HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<String>(gson.toJson("Username and/or Password incorrect"),
+					HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 
 	@PostMapping("/saveUser")
 	ResponseEntity<String> saveUser(@RequestBody User user) {
 		Optional<User> dbUser = userRepository.findByUserName(user.getUserName());
-		
+
 		boolean userExists = dbUser.isPresent();
-		
+
 		if (!userExists) {
 			userRepository.save(user);
 			return new ResponseEntity<String>(gson.toJson("Save User Successfull!!"), HttpStatus.OK);
@@ -154,7 +156,7 @@ public class AuditController {
 	@PostMapping("/saveJob")
 	ResponseEntity<String> saveJob(@RequestBody Job job) {
 		Job j = jobRepository.getJobByJobName(job.getJobName());
-		if(j == null) 
+		if (j == null)
 			jobRepository.save(job);
 		return new ResponseEntity<String>(gson.toJson("Save Job Successfull!!"), HttpStatus.OK);
 	}
@@ -164,12 +166,13 @@ public class AuditController {
 		auditRepository.save(audit);
 		return new ResponseEntity<String>(gson.toJson("Save Audit Successfull!!"), HttpStatus.OK);
 	}
+
 	@GetMapping("/findAllJobs")
 	ResponseEntity<List<Job>> findAllJobs() {
 		List<Job> l = jobRepository.findAll();
-		for(Job j : l) {
+		for (Job j : l) {
 			List<Audit> audits = auditRepository.getAuditByjobId(j.getId());
-			if(null != audits && audits.size() > 0) {
+			if (null != audits && audits.size() > 0) {
 				j.setAudits(audits);
 			}
 		}
@@ -186,12 +189,23 @@ public class AuditController {
 		return new ResponseEntity<String>(gson.toJson("Delete Job Successfull!!"), HttpStatus.OK);
 	}
 
-
 	@GetMapping("/findAllAudits")
 	ResponseEntity<List<Audit>> findAllAudits() {
-		List<Audit> l = auditRepository.findAll();
-		if (l.size() > 0) {
-			return ResponseEntity.ok(l);
+		List<Audit> audits = auditRepository.findAll();
+		
+		List<AuditAllocation> allocatedAudits = auditAllocationRepository.findAll();
+		allocatedAudits.forEach(allocatedAudit -> {
+			audits.forEach(audit -> {
+				if(audit.id.equals(allocatedAudit.getAudit().id) && audit.getAllocatedResources() != null) {
+					audit.getAllocatedResources().add(allocatedAudit.getResource());
+				} else if(audit.id.equals(allocatedAudit.getAudit().id) && audit.getAllocatedResources() == null) {
+					audit.setAllocatedResources(new ArrayList<Resource>());
+					audit.getAllocatedResources().add(allocatedAudit.getResource());
+				}
+			});
+		});
+		if (audits.size() > 0) {
+			return ResponseEntity.ok(audits);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
@@ -203,24 +217,56 @@ public class AuditController {
 		return new ResponseEntity<String>(gson.toJson("Delete Audit Successfull!!"), HttpStatus.OK);
 	}
 
+	@GetMapping("/findAllAllocatedAudits")
+	ResponseEntity<List<AuditAllocation>> findAllAllocatedAudits() {
+		List<AuditAllocation> l = auditAllocationRepository.findAll();
+		if (l.size() > 0) {
+			return ResponseEntity.ok(l);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 	@PostMapping("/allocateAudits")
 	ResponseEntity<String> allocateAudits(@RequestBody List<AuditAllocation> auditAllocations) {
-		for(AuditAllocation auditAllocation : auditAllocations) {
-			auditAllocationRepository.save(auditAllocation);
-
+		List<AuditAllocation> aasSaved = auditAllocationRepository.findAll();
+		// check if the existing save audit allocations has the same object sent from UI
+		// is already stored
+		if (aasSaved.size() > 0) {
+			auditAllocations.forEach(aa -> {
+				aasSaved.forEach(aaSaved -> {
+					if (aaSaved.getAudit().getId().equals(aa.getAudit().getId())
+							&& aaSaved.getResource().getId()
+									.equals(aa.getResource().getId())) {
+						System.out.println(
+								"duplicate auditAllocations :: aa.getAudit().auditName = " + aa.getAudit().auditName
+										+ "aaSaved.getResource().getBasicContactDetail().getLastname() = "
+										+ aaSaved.getResource().getBasicContactDetail().getLastname()
+										+ "aa.getResource().getBasicContactDetail().getLastname() = "
+										+ aa.getResource().getBasicContactDetail().getLastname());
+					} else {
+						auditAllocationRepository.save(aa);
+					}
+				});
+			});
+		} else if (aasSaved.size() == 0) {
+			for (AuditAllocation auditAllocation : auditAllocations) {
+				auditAllocationRepository.save(auditAllocation);
+			}
 		}
+
 		return new ResponseEntity<String>(gson.toJson("Allocated Audit Successfull!!"), HttpStatus.OK);
 	}
 
 	@PostMapping("/unallocateAudits")
 	ResponseEntity<String> unallocateAudits(@RequestBody List<AuditAllocation> auditAllocations) {
-		for(AuditAllocation auditAllocation : auditAllocations) {
+		for (AuditAllocation auditAllocation : auditAllocations) {
 			auditAllocationRepository.delete(auditAllocation);
 
 		}
 		return new ResponseEntity<String>(gson.toJson("Unllocated Audit Successfull!!"), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/sendMail")
 	String sendMail() {
 		// Recipient's email ID needs to be mentioned.
@@ -229,7 +275,6 @@ public class AuditController {
 		// Sender's email ID needs to be mentioned
 		String from = "lalatendu.guru@gmail.com";
 		final String username = "rajalg05";// change accordingly
-		
 
 		// Assuming you are sending email from localhost
 		String host = "localhost";
