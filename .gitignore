@@ -9,3 +9,11 @@ target/
 
 */.DS_Store
 dist/
+
+#application files
+target/
+.mvn/
+HELP.md
+mvnw
+mvnw.cmd
+.gitignore
