@@ -12,7 +12,7 @@ public interface JobRepository extends CrudRepository<Job, String> {
 
     List<Job> findAll();
  
-    List<Job> findAllJobsForAssociate(Long associateId);
+    //List<Job> findAllJobsForAssociate(Long associateId);
     
     Job save(Job job);
     

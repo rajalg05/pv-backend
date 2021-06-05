@@ -11,10 +11,14 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,9 +74,14 @@ public class AuditController {
 	PvUtils pvUtils;
 
 	@PostMapping("/login")
-	ResponseEntity<String> login(@RequestBody User user) {
-		Optional<User> o = userRepository.findByUserName(user.getUserName());
+	ResponseEntity<String> login(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
+		Optional<User> o = userRepository.findByUserName(user.getUserName()); 
+		if(o.isEmpty()) {
+			return new ResponseEntity<String>(gson.toJson("Username not registered!!"),
+					HttpStatus.NOT_ACCEPTABLE);
+		}
 		if (o.get() != null && pvUtils.decrypt(o.get().getPassword()).equals(pvUtils.decrypt(user.getPassword()))) {
+			request.getSession(true);
 			return new ResponseEntity<String>(gson.toJson("Login successful"), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(gson.toJson("Username and/or Password incorrect"),
@@ -102,11 +111,12 @@ public class AuditController {
 	@GetMapping("/getUsers")
 	ResponseEntity<List<User>> findAllUsers() {
 		List<User> l = userRepository.findAll();
-		if (l.size() > 0) {
-			return ResponseEntity.ok(l);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(l);
+//		if (l.size() > 0) {
+//			return ResponseEntity.ok(l);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
 	}
 
 	@PostMapping("/saveResource")
@@ -124,11 +134,12 @@ public class AuditController {
 	@GetMapping("/getResources")
 	ResponseEntity<List<Resource>> findAllResources() {
 		List<Resource> l = resourceRepository.findAll();
-		if (l.size() > 0) {
-			return ResponseEntity.ok(l);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(l);
+//		if (l.size() > 0) {
+//			return ResponseEntity.ok(l);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
 	}
 
 	@PostMapping("/saveAssociate")
@@ -140,11 +151,12 @@ public class AuditController {
 	@GetMapping("/findAllAssociates")
 	ResponseEntity<List<Associate>> findAllAssociates() {
 		List<Associate> l = associateRepository.findAll();
-		if (l.size() > 0) {
-			return ResponseEntity.ok(l);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(l);
+//		if (l.size() > 0) {
+//			return ResponseEntity.ok(l);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
 	}
 
 	@PostMapping("/deleteAssociate")
@@ -204,11 +216,12 @@ public class AuditController {
 				}
 			});
 		});
-		if (audits.size() > 0) {
-			return ResponseEntity.ok(audits);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(audits);
+//		if (audits.size() > 0) {
+//			return ResponseEntity.ok(audits);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
 	}
 
 	@PostMapping("/deleteAudit")
@@ -220,11 +233,12 @@ public class AuditController {
 	@GetMapping("/findAllAllocatedAudits")
 	ResponseEntity<List<AuditAllocation>> findAllAllocatedAudits() {
 		List<AuditAllocation> l = auditAllocationRepository.findAll();
-		if (l.size() > 0) {
-			return ResponseEntity.ok(l);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(l);
+//		if (l.size() > 0) {
+//			return ResponseEntity.ok(l);
+//		} else {
+//			return ResponseEntity.notFound().build();
+//		}
 	}
 
 	@PostMapping("/allocateAudits")
@@ -237,13 +251,8 @@ public class AuditController {
 				aasSaved.forEach(aaSaved -> {
 					if (aaSaved.getAudit().getId().equals(aa.getAudit().getId())
 							&& aaSaved.getResource().getId()
-									.equals(aa.getResource().getId())) {
-						System.out.println(
-								"duplicate auditAllocations :: aa.getAudit().auditName = " + aa.getAudit().auditName
-										+ "aaSaved.getResource().getBasicContactDetail().getLastname() = "
-										+ aaSaved.getResource().getBasicContactDetail().getLastname()
-										+ "aa.getResource().getBasicContactDetail().getLastname() = "
-										+ aa.getResource().getBasicContactDetail().getLastname());
+									.equals(aa.getResource().getId())) { 
+						
 					} else {
 						auditAllocationRepository.save(aa);
 					}
@@ -265,51 +274,5 @@ public class AuditController {
 
 		}
 		return new ResponseEntity<String>(gson.toJson("Unllocated Audit Successfull!!"), HttpStatus.OK);
-	}
-
-	@GetMapping("/sendMail")
-	String sendMail() {
-		// Recipient's email ID needs to be mentioned.
-		String to = "rajalg05@gmail.com";
-
-		// Sender's email ID needs to be mentioned
-		String from = "lalatendu.guru@gmail.com";
-		final String username = "rajalg05";// change accordingly
-
-		// Assuming you are sending email from localhost
-		String host = "localhost";
-
-		Properties props = new Properties();
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", host);
-		props.put("mail.smtp.port", "25");
-
-		// Get the default Session object.
-		Session session = Session.getDefaultInstance(props);
-
-		try {
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
-
-			// Set From: header field of the header.
-			message.setFrom(new InternetAddress(from));
-
-			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-			// Set Subject: header field
-			message.setSubject("This is the Subject Line!");
-
-			// Now set the actual message
-			message.setText("This is actual message");
-
-			// Send message
-			Transport.send(message);
-			System.out.println("Sent message successfully....");
-		} catch (MessagingException mex) {
-			mex.printStackTrace();
-		}
-		return "Mail sent successfully!!";
 	}
 }
