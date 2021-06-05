@@ -3,22 +3,14 @@ package com.audit.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +37,7 @@ import com.google.gson.Gson;
 @RestController
 @RequestMapping("/audit")
 @CrossOrigin(origins = "http://localhost:4200")
+@Transactional
 public class AuditController {
 
 	private static final Gson gson = new Gson();
@@ -264,12 +257,46 @@ public class AuditController {
 		return new ResponseEntity<String>(gson.toJson("Allocated Audit Successfull!!"), HttpStatus.OK);
 	}
 
+	
 	@PostMapping("/unallocateAudits")
 	ResponseEntity<String> unallocateAudits(@RequestBody List<AuditAllocation> auditAllocations) {
-		for (AuditAllocation auditAllocation : auditAllocations) {
-			auditAllocationRepository.delete(auditAllocation);
+		saveResourceAndDeleteAudit(auditAllocations);
+		 /*
+			 * else if (aasSaved.size() == 0) { for (AuditAllocation auditAllocation :
+			 * auditAllocations) { resourceRepository.save(auditAllocation.getResource());//
+			 * update the allocate status in the resource
+			 * auditAllocationRepository.deleteById(aaSaved.id); } }
+			 */
 
+		return new ResponseEntity<String>(gson.toJson("Unallocate Audit Successfull!!"), HttpStatus.OK);
+//		for (AuditAllocation auditAllocation : auditAllocations) {
+//			auditAllocationRepository.delete(auditAllocation);
+//
+//		}
+//		return new ResponseEntity<String>(gson.toJson("Unllocated Audit Successfull!!"), HttpStatus.OK);
+	}
+	
+	
+	public void saveResourceAndDeleteAudit(List<AuditAllocation> auditAllocations) {
+		List<AuditAllocation> aasSaved = auditAllocationRepository.findAll();
+		// check if the existing save audit allocations has the same object sent from UI
+		// is already stored
+		if (aasSaved.size() > 0) {
+			auditAllocations.forEach(aa -> {
+				aasSaved.forEach(aaSaved -> {
+					if (aaSaved.getAudit().getId().equals(aa.getAudit().getId())
+							&& aaSaved.getResource().getId()
+									.equals(aa.getResource().getId())) { 
+						resourceRepository.save(aa.getResource());// update the allocate status in the resource
+						System.out.println("aaSaved.id = " + aaSaved.id);
+						auditAllocationRepository.delete(aaSaved);
+						//auditAllocationRepository.deleteById(aaSaved.id);
+					} else {
+						resourceRepository.save(aa.getResource());// update the allocate status in the resource
+						auditAllocationRepository.deleteById(aaSaved.id);
+					}
+				});
+			});
 		}
-		return new ResponseEntity<String>(gson.toJson("Unllocated Audit Successfull!!"), HttpStatus.OK);
 	}
 }
