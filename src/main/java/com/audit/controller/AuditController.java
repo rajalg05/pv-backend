@@ -135,13 +135,13 @@ public class AuditController {
 	ResponseEntity<List<Resource>> findAllResources() {
 		List<Resource> l = resourceRepository.findAll();
 		return ResponseEntity.ok(l);
-//		if (l.size() > 0) {
-//			return ResponseEntity.ok(l);
-//		} else {
-//			return ResponseEntity.notFound().build();
-//		}
 	}
 
+	@GetMapping("/unAllocatedResources")
+	ResponseEntity<List<Resource>> unAllocatedResources() {
+		return ResponseEntity.ok(resourceRepository.unAllocatedResources());
+	}
+	
 	@PostMapping("/saveAssociate")
 	ResponseEntity<String> saveAssociate(@RequestBody Associate associate) {
 		associateRepository.save(associate);
@@ -152,11 +152,6 @@ public class AuditController {
 	ResponseEntity<List<Associate>> findAllAssociates() {
 		List<Associate> l = associateRepository.findAll();
 		return ResponseEntity.ok(l);
-//		if (l.size() > 0) {
-//			return ResponseEntity.ok(l);
-//		} else {
-//			return ResponseEntity.notFound().build();
-//		}
 	}
 
 	@PostMapping("/deleteAssociate")
@@ -252,14 +247,16 @@ public class AuditController {
 					if (aaSaved.getAudit().getId().equals(aa.getAudit().getId())
 							&& aaSaved.getResource().getId()
 									.equals(aa.getResource().getId())) { 
-						
+						resourceRepository.save(aa.getResource());// update the allocate status in the resource
 					} else {
+						resourceRepository.save(aa.getResource());// update the allocate status in the resource
 						auditAllocationRepository.save(aa);
 					}
 				});
 			});
 		} else if (aasSaved.size() == 0) {
 			for (AuditAllocation auditAllocation : auditAllocations) {
+				resourceRepository.save(auditAllocation.getResource());// update the allocate status in the resource
 				auditAllocationRepository.save(auditAllocation);
 			}
 		}

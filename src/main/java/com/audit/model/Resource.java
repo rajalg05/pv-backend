@@ -42,6 +42,8 @@ public class Resource {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 	
+	public String allocated;
+	
 	@OneToOne( cascade = CascadeType.ALL) 
 	public BasicContactDetail basicContactDetail;  
 	
@@ -78,12 +80,22 @@ public class Resource {
 		this.id = id;
 	}
 
+	 
+
 	public String getBike() {
 		return bike;
 	}
 
 	public void setBike(String bike) {
 		this.bike = bike;
+	}
+
+	public String getAllocated() {
+		return allocated;
+	}
+
+	public void setAllocated(String allocated) {
+		this.allocated = allocated;
 	}
 
 	public BasicContactDetail getBasicContactDetail() {
