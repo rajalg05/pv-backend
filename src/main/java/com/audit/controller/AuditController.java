@@ -105,12 +105,7 @@ public class AuditController {
 	ResponseEntity<List<User>> findAllUsers() {
 		List<User> l = userRepository.findAll();
 		return ResponseEntity.ok(l);
-//		if (l.size() > 0) {
-//			return ResponseEntity.ok(l);
-//		} else {
-//			return ResponseEntity.notFound().build();
-//		}
-	}
+ 	}
 
 	@PostMapping("/saveResource")
 	ResponseEntity<String> saveResource(@RequestBody Resource resource) {
@@ -261,19 +256,7 @@ public class AuditController {
 	@PostMapping("/unallocateAudits")
 	ResponseEntity<String> unallocateAudits(@RequestBody List<AuditAllocation> auditAllocations) {
 		saveResourceAndDeleteAudit(auditAllocations);
-		 /*
-			 * else if (aasSaved.size() == 0) { for (AuditAllocation auditAllocation :
-			 * auditAllocations) { resourceRepository.save(auditAllocation.getResource());//
-			 * update the allocate status in the resource
-			 * auditAllocationRepository.deleteById(aaSaved.id); } }
-			 */
-
 		return new ResponseEntity<String>(gson.toJson("Unallocate Audit Successfull!!"), HttpStatus.OK);
-//		for (AuditAllocation auditAllocation : auditAllocations) {
-//			auditAllocationRepository.delete(auditAllocation);
-//
-//		}
-//		return new ResponseEntity<String>(gson.toJson("Unllocated Audit Successfull!!"), HttpStatus.OK);
 	}
 	
 	
@@ -293,7 +276,8 @@ public class AuditController {
 						//auditAllocationRepository.deleteById(aaSaved.id);
 					} else {
 						resourceRepository.save(aa.getResource());// update the allocate status in the resource
-						auditAllocationRepository.deleteById(aaSaved.id);
+						auditAllocationRepository.delete(aaSaved);
+						//auditAllocationRepository.deleteById(aaSaved.id);
 					}
 				});
 			});
