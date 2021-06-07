@@ -28,7 +28,7 @@ public class Audit {
 	
 	public String auditStatus;
 
-	public LocalDateTime dateOfAudit;
+	public String datesOfAudits;
 	
     @OneToMany(mappedBy = "audit")
 	Set<AuditAllocation> auditAllocations;
@@ -56,25 +56,7 @@ public class Audit {
 	public Audit() {
 		super();
 	}
-
-	public Audit(Address address, String auditName, String auditStatus, LocalDateTime dateOfAudit,
-			Set<AuditAllocation> auditAllocations, Job job, Long jobId, String jobName, Double paymentReceived,
-			String statusUpdatedBy, LocalDateTime createdTs, LocalDateTime updatedTs, Long id) {
-		super();
-		this.address = address;
-		this.auditName = auditName;
-		this.auditStatus = auditStatus;
-		this.dateOfAudit = dateOfAudit;
-		this.auditAllocations = auditAllocations;
-		this.job = job;
-		this.jobId = jobId;
-		this.jobName = jobName;
-		this.paymentReceived = paymentReceived;
-		this.statusUpdatedBy = statusUpdatedBy;
-		this.createdTs = createdTs;
-		this.updatedTs = updatedTs;
-		this.id = id;
-	}
+ 
 
 	public String getJobName() {
 		return jobName;
@@ -118,13 +100,17 @@ public class Audit {
 	}
 	public void setAuditStatus(String auditStatus) {
 		this.auditStatus = auditStatus;
-	}
-	public LocalDateTime getDateOfAudit() {
-		return dateOfAudit;
-	}
-	public void setDateOfAudit(LocalDateTime dateOfAudit) {
-		this.dateOfAudit = dateOfAudit;
 	} 
+	
+	public String getDatesOfAudits() {
+		return datesOfAudits;
+	}
+
+	public void setDatesOfAudits(String datesOfAudits) {
+		this.datesOfAudits = datesOfAudits;
+	}
+
+
 	public String getStatusUpdatedBy() {
 		return statusUpdatedBy;
 	}
