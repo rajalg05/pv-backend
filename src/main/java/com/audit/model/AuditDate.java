@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "auditDate")
@@ -28,6 +29,10 @@ public class AuditDate {
 
     Integer auditDay;
  
+    String name;
+    
+    String code;
+    
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id; 
@@ -60,6 +65,17 @@ public class AuditDate {
 	public void setAuditDay(Integer auditDay) {
 		this.auditDay = auditDay;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-	
 }

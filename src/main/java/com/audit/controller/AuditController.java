@@ -178,6 +178,11 @@ public class AuditController {
 		List<Job> l = jobRepository.findAll();
 		for (Job j : l) {
 			List<Audit> audits = auditRepository.getAuditByjobId(j.getId());
+			
+			audits.forEach(audit -> {
+				List<AuditDate> auditDates = auditDateRepository.findByAuditId(audit.getId());	
+				audit.setAuditDates(new HashSet<AuditDate>(auditDates));
+			}); 
 			if (null != audits && audits.size() > 0) {
 				j.setAudits(audits);
 			}
