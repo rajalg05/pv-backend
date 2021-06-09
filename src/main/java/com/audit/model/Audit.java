@@ -21,30 +21,37 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "audit")
 public class Audit {
-	@OneToOne( cascade = CascadeType.ALL) 
-	public Address address;
-	
-	public String auditName;
-	
-	public String auditStatus;
-
-	public String datesOfAudits;
-	
-    @OneToMany(mappedBy = "audit")
-	Set<AuditAllocation> auditAllocations;
-	
-    @Transient
-    List<Resource> allocatedResources; 
-    
-	@JsonIgnore
-	@ManyToOne( cascade = CascadeType.ALL) 
-	@JoinColumn(name = "jobId",referencedColumnName = "id",insertable = false, updatable = false)
-	public Job job;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Long id; 
 	
 	public Long jobId; 
 	
 	public String jobName; 
 	
+	@OneToOne( cascade = CascadeType.ALL) 
+	public Address address;
+	
+	public String auditStatus;
+	
+	public String auditName;
+
+	@OneToMany(mappedBy = "auditDate")
+	Set<AuditDate> auditDates;
+    
+	@JsonIgnore
+	@ManyToOne( cascade = CascadeType.ALL) 
+	@JoinColumn(name = "jobId",referencedColumnName = "id",insertable = false, updatable = false)
+	public Job job;
+	 
+	public Set<AuditDate> getAuditDates() {
+		return auditDates;
+	}
+
+	public void setAuditDates(Set<AuditDate> auditDates) {
+		this.auditDates = auditDates;
+	}
+ 
 	public Double paymentReceived;
 	
 	public String statusUpdatedBy;
@@ -65,9 +72,7 @@ public class Audit {
 		this.jobName = jobName;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id; 
+	
 	
 	public Long getId() {
 		return id;
@@ -100,16 +105,7 @@ public class Audit {
 	}
 	public void setAuditStatus(String auditStatus) {
 		this.auditStatus = auditStatus;
-	} 
-	
-	public String getDatesOfAudits() {
-		return datesOfAudits;
-	}
-
-	public void setDatesOfAudits(String datesOfAudits) {
-		this.datesOfAudits = datesOfAudits;
-	}
-
+	}  
 
 	public String getStatusUpdatedBy() {
 		return statusUpdatedBy;
@@ -123,15 +119,7 @@ public class Audit {
 	public void setJobId(Long jobId) {
 		this.jobId = jobId;
 	}
-	
-	public List<Resource> getAllocatedResources() {
-		return allocatedResources;
-	}
-
-	public void setAllocatedResources(List<Resource> allocatedResources) {
-		this.allocatedResources = allocatedResources;
-	}
-
+ 
 	public Double getPaymentReceived() {
 		return paymentReceived;
 	}
@@ -150,5 +138,5 @@ public class Audit {
 	public void setUpdatedTs(LocalDateTime updatedTs) {
 		this.updatedTs = updatedTs;
 	}
-    
+
 }

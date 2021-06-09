@@ -15,8 +15,7 @@ public interface ResourceRepository extends CrudRepository<Resource, String> {
  
     Resource save(Resource resource);
     
-    void delete(Resource resource);
-
+    void delete(Resource resource); 
     @Query(value = "SELECT * FROM RESOURCE WHERE allocated != 'true'", 
     		nativeQuery= true)
 	List<Resource> unAllocatedResources();

@@ -1,6 +1,5 @@
 package com.audit.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,7 +126,8 @@ public class AuditController {
 
 	@GetMapping("/unAllocatedResources")
 	ResponseEntity<List<Resource>> unAllocatedResources() {
-		return ResponseEntity.ok(resourceRepository.unAllocatedResources());
+		List<Resource> l = resourceRepository.unAllocatedResources();
+		return ResponseEntity.ok(l);
 	}
 	
 	@PostMapping("/saveAssociate")
@@ -149,11 +149,11 @@ public class AuditController {
 	}
 
 	@PostMapping("/saveJob")
-	ResponseEntity<String> saveJob(@RequestBody Job job) {
+	ResponseEntity<Job> saveJob(@RequestBody Job job) {
 		Job j = jobRepository.getJobByJobName(job.getJobName());
 		if (j == null)
-			jobRepository.save(job);
-		return new ResponseEntity<String>(gson.toJson("Save Job Successfull!!"), HttpStatus.OK);
+			j = jobRepository.save(job);
+		return new ResponseEntity<Job>(j, HttpStatus.OK);
 	}
 
 	@PostMapping("/saveAudit")
@@ -189,22 +189,17 @@ public class AuditController {
 		List<Audit> audits = auditRepository.findAll();
 		
 		List<AuditAllocation> allocatedAudits = auditAllocationRepository.findAll();
-		allocatedAudits.forEach(allocatedAudit -> {
-			audits.forEach(audit -> {
-				if(audit.id.equals(allocatedAudit.getAudit().id) && audit.getAllocatedResources() != null) {
-					audit.getAllocatedResources().add(allocatedAudit.getResource());
-				} else if(audit.id.equals(allocatedAudit.getAudit().id) && audit.getAllocatedResources() == null) {
-					audit.setAllocatedResources(new ArrayList<Resource>());
-					audit.getAllocatedResources().add(allocatedAudit.getResource());
-				}
-			});
-		});
+//		allocatedAudits.forEach(allocatedAudit -> {
+//			audits.forEach(audit -> {
+//				if(audit.id.equals(allocatedAudit.getAuditDate().getAuditId()) && audit.getAllocatedResources() != null) {
+//					audit.getAllocatedResources().add(allocatedAudit.getResource());
+//				} else if(audit.id.equals(allocatedAudit.getAuditDate().getAuditId()) && audit.getAllocatedResources() == null) {
+//					audit.setAllocatedResources(new ArrayList<Resource>());
+//					audit.getAllocatedResources().add(allocatedAudit.getResource());
+//				}
+//			});
+//		});
 		return ResponseEntity.ok(audits);
-//		if (audits.size() > 0) {
-//			return ResponseEntity.ok(audits);
-//		} else {
-//			return ResponseEntity.notFound().build();
-//		}
 	}
 
 	@PostMapping("/deleteAudit")
@@ -216,12 +211,7 @@ public class AuditController {
 	@GetMapping("/findAllAllocatedAudits")
 	ResponseEntity<List<AuditAllocation>> findAllAllocatedAudits() {
 		List<AuditAllocation> l = auditAllocationRepository.findAll();
-		return ResponseEntity.ok(l);
-//		if (l.size() > 0) {
-//			return ResponseEntity.ok(l);
-//		} else {
-//			return ResponseEntity.notFound().build();
-//		}
+		return ResponseEntity.ok(l); 
 	}
 
 	@PostMapping("/allocateAudits")
@@ -232,7 +222,7 @@ public class AuditController {
 		if (aasSaved.size() > 0) {
 			auditAllocations.forEach(aa -> {
 				aasSaved.forEach(aaSaved -> {
-					if (aaSaved.getAudit().getId().equals(aa.getAudit().getId())
+					if (aaSaved.getAuditDate().getAuditId().equals(aa.getAuditDate().getAuditId())
 							&& aaSaved.getResource().getId()
 									.equals(aa.getResource().getId())) { 
 						resourceRepository.save(aa.getResource());// update the allocate status in the resource
@@ -267,17 +257,14 @@ public class AuditController {
 		if (aasSaved.size() > 0) {
 			auditAllocations.forEach(aa -> {
 				aasSaved.forEach(aaSaved -> {
-					if (aaSaved.getAudit().getId().equals(aa.getAudit().getId())
+					if (aaSaved.getAuditDate().getAuditId().equals(aa.getAuditDate().getAuditId())
 							&& aaSaved.getResource().getId()
 									.equals(aa.getResource().getId())) { 
 						resourceRepository.save(aa.getResource());// update the allocate status in the resource
-						System.out.println("aaSaved.id = " + aaSaved.id);
 						auditAllocationRepository.delete(aaSaved);
-						//auditAllocationRepository.deleteById(aaSaved.id);
 					} else {
 						resourceRepository.save(aa.getResource());// update the allocate status in the resource
 						auditAllocationRepository.delete(aaSaved);
-						//auditAllocationRepository.deleteById(aaSaved.id);
 					}
 				});
 			});

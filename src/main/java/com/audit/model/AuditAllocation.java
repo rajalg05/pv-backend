@@ -11,69 +11,35 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "audit_allocation")
+@Table(name = "auditAllocation")
 public class AuditAllocation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id; 
+	public Long auditAllocationid; 
 	
-	public Long getId() {
-		return id;
+	public Long getAuditAllocationid() {
+		return auditAllocationid;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setAuditAllocationid(Long auditAllocationid) {
+		this.auditAllocationid = auditAllocationid;
 	}
-	
 	public AuditAllocation() {
 		super();
 	}
 
-	public AuditAllocation(Audit audit, Resource resource, LocalDateTime allocatedAt, String allocatedBy,
-			LocalDateTime auditDate, Integer auditDay) {
-		super();
-		this.audit = audit;
-		this.resource = resource;
-		this.allocatedAt = allocatedAt;
-		this.allocatedBy = allocatedBy;
-		this.auditDate = auditDate;
-		this.auditDay = auditDay;
-	}
-
-	@ManyToOne
-    @JoinColumn(name = "audit_id")
-    Audit audit;
+ 	@ManyToOne
+    @JoinColumn(name = "auditDateId")
+    AuditDate auditDate;
 
     @ManyToOne
-    @JoinColumn(name = "resource_id")
+    @JoinColumn(name = "resourceId")
     Resource resource;
 
     LocalDateTime allocatedAt;
 
     String allocatedBy;
     
-    LocalDateTime auditDate;
-
-    Integer auditDay;
-
-	public LocalDateTime getAuditDate() {
-		return auditDate;
-	}
-	public void setAuditDate(LocalDateTime auditDate) {
-		this.auditDate = auditDate;
-	}
-	public Integer getAuditDay() {
-		return auditDay;
-	}
-	public void setAuditDay(Integer auditDay) {
-		this.auditDay = auditDay;
-	}
-	public Audit getAudit() {
-		return audit;
-	}
-	public void setAudit(Audit audit) {
-		this.audit = audit;
-	}
-	public Resource getResource() {
+ 	public Resource getResource() {
 		return resource;
 	}
 	public void setResource(Resource resource) {
@@ -91,6 +57,11 @@ public class AuditAllocation {
 	public void setAllocatedBy(String allocatedBy) {
 		this.allocatedBy = allocatedBy;
 	}
-    
+	public AuditDate getAuditDate() {
+		return auditDate;
+	}
+	public void setAuditDate(AuditDate auditDate) {
+		this.auditDate = auditDate;
+	}
     
 }

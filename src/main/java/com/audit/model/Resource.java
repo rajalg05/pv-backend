@@ -1,6 +1,5 @@
 package com.audit.model;
 
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,26 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "resource")
 public class Resource {
-	
-	public Resource(Long id, BasicContactDetail basicContactDetail, KYC kyc, Address address,
-			Set<AuditAllocation> auditAllocations, Date dateOfBirth, String qualification, String excelSkills,
-			String stockAuditExp, String resourceType, String bike, Date createdTs, Date updatedTs) {
-		super();
-		this.id = id;
-		this.basicContactDetail = basicContactDetail;
-		this.kyc = kyc;
-		this.address = address;
-		this.auditAllocations = auditAllocations;
-		this.dateOfBirth = dateOfBirth;
-		this.qualification = qualification;
-		this.excelSkills = excelSkills;
-		this.stockAuditExp = stockAuditExp;
-		this.resourceType = resourceType;
-		this.bike = bike;
-		this.createdTs = createdTs;
-		this.updatedTs = updatedTs;
-	}
-
+	 
 	public Resource() {
 		super();
 	}

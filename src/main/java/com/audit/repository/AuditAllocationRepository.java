@@ -16,7 +16,4 @@ public interface AuditAllocationRepository extends CrudRepository<AuditAllocatio
 
     void delete(AuditAllocation auditAllocation);
     
-	void deleteById(Long id);
-
-
 }
