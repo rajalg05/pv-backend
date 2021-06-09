@@ -1,5 +1,6 @@
 package com.audit.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.audit.model.Associate;
 import com.audit.model.Audit;
 import com.audit.model.AuditAllocation;
+import com.audit.model.AuditDate;
 import com.audit.model.Job;
 import com.audit.model.Resource;
 import com.audit.model.User;
 import com.audit.repository.AssociateRepository;
 import com.audit.repository.AuditAllocationRepository;
+import com.audit.repository.AuditDateRepository;
 import com.audit.repository.AuditRepository;
 import com.audit.repository.JobRepository;
 import com.audit.repository.ResourceRepository;
@@ -56,6 +59,9 @@ public class AuditController {
 	@Autowired
 	AuditRepository auditRepository;
 
+	@Autowired
+	AuditDateRepository auditDateRepository;
+	
 	@Autowired
 	AuditAllocationRepository auditAllocationRepository;
 
@@ -158,7 +164,12 @@ public class AuditController {
 
 	@PostMapping("/saveAudit")
 	ResponseEntity<String> saveAudit(@RequestBody Audit audit) {
-		auditRepository.save(audit);
+		
+		Audit auditSaved = auditRepository.save(audit);
+		audit.getAuditDates().forEach(auditDate -> {
+			auditDate.setAuditId(auditSaved.getId());
+			auditDateRepository.save(auditDate);
+		});
 		return new ResponseEntity<String>(gson.toJson("Save Audit Successfull!!"), HttpStatus.OK);
 	}
 
@@ -199,9 +210,15 @@ public class AuditController {
 //				}
 //			});
 //		});
+		
+		audits.forEach(audit -> {
+			List<AuditDate> auditDates = auditDateRepository.findByAuditId(audit.getId());	
+			audit.setAuditDates(new HashSet<AuditDate>(auditDates));
+		}); 
+		
 		return ResponseEntity.ok(audits);
-	}
-
+	} 
+	
 	@PostMapping("/deleteAudit")
 	ResponseEntity<String> deleteAudit(@RequestBody Audit audit) {
 		auditRepository.delete(audit);
