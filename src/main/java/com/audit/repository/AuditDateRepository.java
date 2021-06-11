@@ -14,6 +14,8 @@ public interface AuditDateRepository extends CrudRepository<AuditDate, String> {
     
     List<AuditDate> findByAuditId(Long auditId);
     
+    List<AuditDate> findAll();
+    
     void delete(AuditDate auditDate);
     
 }

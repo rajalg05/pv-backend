@@ -237,6 +237,12 @@ public class AuditController {
 		return ResponseEntity.ok(l); 
 	}
 
+	@GetMapping("/findAllAuditDates")
+	ResponseEntity<List<AuditDate>> findAllAuditDates() {
+		List<AuditDate> l = auditDateRepository.findAll();
+		return ResponseEntity.ok(l); 
+	}
+	
 	@PostMapping("/allocateAudits")
 	ResponseEntity<String> allocateAudits(@RequestBody List<AuditAllocation> auditAllocations) {
 		List<AuditAllocation> aasSaved = auditAllocationRepository.findAll();
