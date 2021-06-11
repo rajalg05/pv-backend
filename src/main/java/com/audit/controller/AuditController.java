@@ -1,5 +1,6 @@
 package com.audit.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -163,14 +164,14 @@ public class AuditController {
 	}
 
 	@PostMapping("/saveAudit")
-	ResponseEntity<String> saveAudit(@RequestBody Audit audit) {
+	ResponseEntity<Audit> saveAudit(@RequestBody Audit audit) {
 		
 		Audit auditSaved = auditRepository.save(audit);
 		audit.getAuditDates().forEach(auditDate -> {
 			auditDate.setAuditId(auditSaved.getId());
 			auditDateRepository.save(auditDate);
 		});
-		return new ResponseEntity<String>(gson.toJson("Save Audit Successfull!!"), HttpStatus.OK);
+		return new ResponseEntity<Audit>(auditSaved, HttpStatus.OK);
 	}
 
 	@GetMapping("/findAllJobs")
@@ -205,16 +206,16 @@ public class AuditController {
 		List<Audit> audits = auditRepository.findAll();
 		
 		List<AuditAllocation> allocatedAudits = auditAllocationRepository.findAll();
-//		allocatedAudits.forEach(allocatedAudit -> {
-//			audits.forEach(audit -> {
-//				if(audit.id.equals(allocatedAudit.getAuditDate().getAuditId()) && audit.getAllocatedResources() != null) {
-//					audit.getAllocatedResources().add(allocatedAudit.getResource());
-//				} else if(audit.id.equals(allocatedAudit.getAuditDate().getAuditId()) && audit.getAllocatedResources() == null) {
-//					audit.setAllocatedResources(new ArrayList<Resource>());
-//					audit.getAllocatedResources().add(allocatedAudit.getResource());
-//				}
-//			});
-//		});
+		allocatedAudits.forEach(allocatedAudit -> {
+			audits.forEach(audit -> {
+				if(audit.id.equals(allocatedAudit.getAuditDate().getAuditId()) && audit.getAllocatedResources() != null) {
+					audit.getAllocatedResources().add(allocatedAudit.getResource());
+				} else if(audit.id.equals(allocatedAudit.getAuditDate().getAuditId()) && audit.getAllocatedResources() == null) {
+					audit.setAllocatedResources(new ArrayList<Resource>());
+					audit.getAllocatedResources().add(allocatedAudit.getResource());
+				}
+			});
+		});
 		
 		audits.forEach(audit -> {
 			List<AuditDate> auditDates = auditDateRepository.findByAuditId(audit.getId());	
@@ -242,22 +243,26 @@ public class AuditController {
 		// check if the existing save audit allocations has the same object sent from UI
 		// is already stored
 		if (aasSaved.size() > 0) {
-			auditAllocations.forEach(aa -> {
+			auditAllocations.forEach(auditAllocationSentFromUI -> {
 				aasSaved.forEach(aaSaved -> {
-					if (aaSaved.getAuditDate().getAuditId().equals(aa.getAuditDate().getAuditId())
+					if (aaSaved.getAuditDate().getAuditId().equals(auditAllocationSentFromUI.getAuditDate().getAuditId())
 							&& aaSaved.getResource().getId()
-									.equals(aa.getResource().getId())) { 
-						resourceRepository.save(aa.getResource());// update the allocate status in the resource
+									.equals(auditAllocationSentFromUI.getResource().getId())) { 
+						resourceRepository.save(auditAllocationSentFromUI.getResource());// update the allocate status in the resource
+						auditDateRepository.save(auditAllocationSentFromUI.getAuditDate());
 					} else {
-						resourceRepository.save(aa.getResource());// update the allocate status in the resource
-						auditAllocationRepository.save(aa);
+						resourceRepository.save(auditAllocationSentFromUI.getResource());// update the allocate status in the resource
+						auditAllocationRepository.save(auditAllocationSentFromUI);
+						auditDateRepository.save(auditAllocationSentFromUI.getAuditDate());
 					}
 				});
 			});
 		} else if (aasSaved.size() == 0) {
-			for (AuditAllocation auditAllocation : auditAllocations) {
-				resourceRepository.save(auditAllocation.getResource());// update the allocate status in the resource
-				auditAllocationRepository.save(auditAllocation);
+			for (AuditAllocation auditAllocationSentFromUI : auditAllocations) {
+				resourceRepository.save(auditAllocationSentFromUI.getResource());// update the allocate status in the resource
+				auditDateRepository.save(auditAllocationSentFromUI.getAuditDate());
+				auditAllocationRepository.save(auditAllocationSentFromUI);
+				
 			}
 		}
 

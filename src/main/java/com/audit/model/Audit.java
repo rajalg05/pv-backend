@@ -44,6 +44,9 @@ public class Audit {
 	@JoinColumn(name = "jobId",referencedColumnName = "id",insertable = false, updatable = false)
 	public Job job;
 	 
+	@Transient
+	List<Resource> allocatedResources; 
+	
 	public Set<AuditDate> getAuditDates() {
 		return auditDates;
 	}
@@ -137,6 +140,14 @@ public class Audit {
 	}
 	public void setUpdatedTs(LocalDateTime updatedTs) {
 		this.updatedTs = updatedTs;
+	}
+
+	public List<Resource> getAllocatedResources() {
+		return allocatedResources;
+	}
+
+	public void setAllocatedResources(List<Resource> allocatedResources) {
+		this.allocatedResources = allocatedResources;
 	}
 
 }
