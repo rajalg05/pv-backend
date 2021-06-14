@@ -1,6 +1,7 @@
 package com.audit.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "auditDate")
@@ -25,7 +28,8 @@ public class AuditDate {
 		
 	public Long auditId; 
 	
-    LocalDateTime auditDate;
+	@JsonFormat(timezone = "IST")
+    Date auditDate;
 
     Integer auditDay;
  
@@ -52,11 +56,11 @@ public class AuditDate {
 	}
 	public void setAuditId(Long auditId) {
 		this.auditId = auditId;
-	}
-	public LocalDateTime getAuditDate() {
+	} 
+	public Date getAuditDate() {
 		return auditDate;
 	}
-	public void setAuditDate(LocalDateTime auditDate) {
+	public void setAuditDate(Date auditDate) {
 		this.auditDate = auditDate;
 	}
 	public Integer getAuditDay() {
