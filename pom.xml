@@ -11,6 +11,8 @@
 	</parent>
 	<groupId>com.audit</groupId>
 	<artifactId>pv-backend</artifactId>
+	<!-- Output to jar format -->
+    <packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pv</name>
 	<description>Project for PV</description>
@@ -133,6 +135,24 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			
+			 <!-- Make this jar executable -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                  <!-- DO NOT include log4j.properties file in your Jar -->
+                  <excludes>
+                    <exclude>**/log4j.properties</exclude>
+                  </excludes>
+                  <archive>
+                    <manifest>
+                        <!-- Jar file entry point -->
+                        <mainClass>com.audit.PvApplication</mainClass>
+                    </manifest>
+                  </archive>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
